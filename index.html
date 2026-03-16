@@ -16,6 +16,13 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <!-- Firebase 設定（git管理外） -->
+  <script src="firebase-config.js" onerror="console.info('firebase-config.js が見つかりません。localStorage モードで動作します。')"></script>
+
   <style>
     /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -102,7 +109,17 @@
     .nav-logo {
       font-size: 1.1rem; font-weight: 800;
       letter-spacing: -0.03em; color: var(--accent);
+      background: none; border: none; font-family: inherit;
+      cursor: pointer; padding: 0.2rem 0.5rem;
+      border-radius: 6px; transition: 0.2s;
+      position: relative;
     }
+    .nav-logo::after {
+      content: ' 🎮'; font-size: 0.7rem; opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .nav-logo:hover { background: var(--accent-lt); }
+    .nav-logo:hover::after { opacity: 1; }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
       font-size: 0.875rem; font-weight: 500; color: var(--muted);
@@ -544,10 +561,10 @@
       user-select: none;
     }
 
-    /* スライドインメニュー */
+    /* スライドインメニュー（テーマ変更の影響を受けないようCSS変数不使用） */
     .ctrl-menu {
       background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
-      border: 1px solid var(--border); border-radius: 16px;
+      border: 1px solid #e5e7eb; border-radius: 16px;
       padding: 1rem 1.1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
       min-width: 158px;
       transform: translateX(16px); opacity: 0; pointer-events: none;
@@ -556,7 +573,7 @@
     .ctrl-menu.open { transform: translateX(0); opacity: 1; pointer-events: all; }
     .ctrl-menu-title {
       font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+      text-transform: uppercase; color: #6b7280; margin-bottom: 0.75rem;
     }
     /* メニュー項目 */
     .ctrl-menu-items { display: flex; flex-direction: column; gap: 0.3rem; }
@@ -565,15 +582,15 @@
       padding: 0.52rem 0.8rem; border-radius: 8px;
       border: 1.5px solid transparent; background: transparent;
       cursor: pointer; font-size: 0.82rem; font-weight: 600;
-      color: var(--text-sub); transition: 0.18s; text-align: left;
+      color: #374151; transition: 0.18s; text-align: left;
       font-family: inherit; width: 100%; white-space: nowrap;
     }
-    .ctrl-menu-item:hover { background: var(--bg-off); }
+    .ctrl-menu-item:hover { background: #f7f9fc; }
     .ctrl-menu-item.focused {
-      border-color: var(--accent); background: var(--accent-lt); color: var(--accent);
+      border-color: #1a56db; background: rgba(26,86,219,0.08); color: #1a56db;
     }
     .ctrl-menu-item.active-item::after {
-      content: '●'; margin-left: auto; font-size: 0.6rem; color: var(--accent);
+      content: '●'; margin-left: auto; font-size: 0.6rem; color: #1a56db;
     }
 
     /* ======================================
@@ -588,7 +605,7 @@
       width: 58px; height: 21px;
       background: linear-gradient(180deg, #424242, #2c2c2c);
       border: 1px solid rgba(255,255,255,0.08); border-bottom: none;
-      border-radius: 10px 10px 0 0;
+      border-radius: 40px 40px 0 0;
       color: rgba(255,255,255,0.65); font-size: 0.52rem; font-weight: 800;
       cursor: pointer; font-family: inherit; transition: 0.15s;
       display: flex; align-items: center; justify-content: center;
@@ -605,22 +622,22 @@
     }
     /* メニューのヒント文 */
     .ctrl-hint {
-      font-size: 0.58rem; color: var(--muted); margin-top: 0.5rem;
+      font-size: 0.58rem; color: #6b7280; margin-top: 0.5rem;
       text-align: center; opacity: 0.7; letter-spacing: 0.03em;
     }
 
     .ctrl-shell {
       position: relative;
       padding-top: 22px;
-      padding-bottom: 66px;
+      padding-bottom: 50px;
       filter: drop-shadow(0 12px 32px rgba(0,0,0,0.6));
     }
 
-    /* 本体（丸みのある横長フォルム） */
+    /* 本体（PS4風：下部は緩やかなカーブでグリップへ繋がる） */
     .ctrl-body {
       width: 242px; height: 100px;
       background: linear-gradient(150deg, #2d2d2d 0%, #1e1e1e 45%, #151515 100%);
-      border-radius: 50px;
+      border-radius: 50px 50px 26px 26px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 18px; position: relative; z-index: 2;
       border: 1px solid rgba(255,255,255,0.055);
@@ -637,7 +654,7 @@
       background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, transparent 100%);
       pointer-events: none;
     }
-    /* 透明感のある装飾パターン（Switch特有） */
+    /* 透明感のある装飾パターン */
     .ctrl-body::after {
       content: '';
       position: absolute; inset: 0; border-radius: inherit;
@@ -645,14 +662,23 @@
       pointer-events: none;
     }
 
-    /* グリップ（Switch Pro Controller 実形状に合わせた形・スティックなし） */
+    /* グリップ（PS4風シームレス接続） */
     .ctrl-grips {
       position: absolute; bottom: 0; left: 0; right: 0;
-      display: flex; justify-content: space-between; padding: 0 20px;
+      display: flex; justify-content: space-between; padding: 0 18px;
       z-index: 1;
     }
+    /* グリップ間の中央ブリッジ（本体底面と段差なく繋がる） */
+    .ctrl-grips::before {
+      content: '';
+      position: absolute; top: 0;
+      left: calc(18px + 66px); right: calc(18px + 66px);
+      height: 22px;
+      background: linear-gradient(180deg, #1e1e1e 0%, #181818 100%);
+      border-radius: 0 0 6px 6px;
+    }
     .ctrl-grip {
-      width: 60px; height: 70px;
+      width: 66px; height: 68px;
       background: linear-gradient(170deg, #272727 0%, #1c1c1c 40%, #111111 100%);
       border: 1px solid rgba(255,255,255,0.04); border-top: none;
       box-shadow:
@@ -662,11 +688,11 @@
     }
     /* 左グリップ：外側(左)上が緩やかに、内側(右)上はほぼ直角 */
     .ctrl-grip:first-child {
-      border-radius: 20px 3px 42px 50px;
+      border-radius: 20px 3px 40px 48px;
     }
     /* 右グリップ：内側(左)上はほぼ直角、外側(右)上が緩やかに */
     .ctrl-grip:last-child {
-      border-radius: 3px 20px 50px 42px;
+      border-radius: 3px 20px 48px 40px;
     }
 
     /* アナログスティック（グリップ内） */
@@ -950,6 +976,249 @@
       font-size: 0.88rem; color: var(--muted); line-height: 1.75;
     }
 
+    /* ===== HOBBY PAGE ===== */
+    .hobby-page {
+      position: fixed; inset: 0; z-index: 400;
+      background: var(--bg); overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hobby-page.open { transform: translateY(0); }
+    .hobby-nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+    }
+    .hobby-back {
+      display: flex; align-items: center; gap: 0.4rem;
+      background: none; border: none; cursor: pointer;
+      font-size: 0.9rem; font-weight: 600; color: var(--muted);
+      font-family: inherit; transition: 0.2s; padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+    }
+    .hobby-back:hover { background: var(--bg-off); color: var(--text); }
+    .hobby-nav-title {
+      font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent);
+    }
+    .hobby-hero {
+      background: linear-gradient(135deg, var(--accent-lt) 0%, var(--bg-off) 100%);
+      padding: 4rem 5% 3rem; text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .hobby-hero-emoji { font-size: 3.5rem; margin-bottom: 1rem; }
+    .hobby-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: var(--text); margin-bottom: 0.5rem; }
+    .hobby-hero p { color: var(--muted); font-size: 1rem; }
+    .hobby-tabs {
+      display: flex; gap: 0.5rem; overflow-x: auto;
+      padding: 1.2rem 5%; border-bottom: 1px solid var(--border);
+      background: var(--bg); position: sticky; top: 64px; z-index: 9;
+    }
+    .hobby-tab {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1.1rem; border-radius: 99px; border: 1.5px solid var(--border);
+      background: transparent; cursor: pointer; font-size: 0.82rem; font-weight: 600;
+      color: var(--muted); font-family: inherit; white-space: nowrap; transition: 0.2s;
+    }
+    .hobby-tab:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+    .hobby-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .hobby-content { max-width: 1000px; margin: 0 auto; padding: 3rem 5% 5rem; }
+    .hobby-section { display: none; }
+    .hobby-section.active { display: block; }
+    .hobby-section-header { margin-bottom: 2rem; }
+    .hobby-section-header h2 { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; }
+    .hobby-section-header p { color: var(--muted); font-size: 0.95rem; }
+    /* ゲームグリッド */
+    .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+    .game-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.3rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .game-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .game-emoji { font-size: 2.2rem; margin-bottom: 0.6rem; }
+    .game-title { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; line-height: 1.4; }
+    .game-genre { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .game-stars { color: #f59e0b; font-size: 0.85rem; }
+    .game-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem; font-style: italic; }
+    .game-badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem;
+      border-radius: 99px; margin-top: 0.4rem;
+    }
+    .badge-clear { background: rgba(5,150,105,0.12); color: #059669; }
+    .badge-playing { background: rgba(26,86,219,0.1); color: #1a56db; }
+    .badge-loved { background: rgba(220,38,38,0.1); color: #dc2626; }
+    /* お酒グリッド */
+    .drink-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+    .drink-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.3rem; text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .drink-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .drink-emoji { font-size: 2.8rem; margin-bottom: 0.6rem; }
+    .drink-name { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
+    .drink-desc { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.6; }
+    .drink-meter {
+      display: flex; gap: 3px; justify-content: center; margin-top: 0.4rem;
+    }
+    .drink-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .drink-dot.on { background: var(--accent); }
+    .drink-dot.off { background: var(--border); }
+    /* 料理グリッド */
+    .cook-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+    .cook-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cook-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .cook-thumb {
+      height: 90px; display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; background: var(--bg-off);
+    }
+    .cook-body { padding: 1rem; }
+    .cook-title { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+    .cook-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.6; }
+    .cook-level {
+      display: inline-block; margin-top: 0.5rem;
+      font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.55rem;
+      border-radius: 99px; background: var(--accent-lt); color: var(--accent);
+    }
+    /* 映画・旅行グリッド */
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .media-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .media-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .media-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .media-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+    .media-sub { font-size: 0.74rem; color: var(--muted); }
+    .media-stars { color: #f59e0b; font-size: 0.82rem; margin-top: 0.3rem; }
+    .travel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+    .travel-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .travel-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .travel-emoji { font-size: 2.2rem; flex-shrink: 0; }
+    .travel-name { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+    .travel-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+
+    /* ===== GAME SERIES MODAL ===== */
+    .gsm-overlay {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .gsm-overlay.open { opacity: 1; pointer-events: all; }
+    .gsm-panel {
+      background: var(--bg); width: 100%; max-width: 640px;
+      max-height: 85vh; border-radius: 24px 24px 0 0;
+      display: flex; flex-direction: column;
+      transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+    }
+    .gsm-overlay.open .gsm-panel { transform: translateY(0); }
+    .gsm-handle {
+      width: 40px; height: 4px; border-radius: 99px;
+      background: var(--border); margin: 12px auto 0;
+    }
+    .gsm-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem 0.8rem; border-bottom: 1px solid var(--border);
+    }
+    .gsm-header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .gsm-emoji { font-size: 1.8rem; }
+    .gsm-title { font-size: 1rem; font-weight: 800; color: var(--text); }
+    .gsm-count { font-size: 0.76rem; color: var(--muted); margin-top: 0.1rem; }
+    .gsm-close {
+      background: var(--bg-off); border: 1px solid var(--border);
+      border-radius: 50%; width: 32px; height: 32px; cursor: pointer;
+      font-size: 0.8rem; font-weight: 700; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; transition: 0.2s;
+    }
+    .gsm-close:hover { background: var(--border); color: var(--text); }
+    .gsm-body { overflow-y: auto; flex: 1; padding: 0.5rem 0; }
+    .gsm-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.7rem 1.5rem; transition: background 0.15s;
+    }
+    .gsm-row:hover { background: var(--bg-off); }
+    .gsm-check { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .gsm-info { flex: 1; min-width: 0; }
+    .gsm-game-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .gsm-game-year { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+    .gsm-stars-wrap { display: flex; gap: 2px; flex-shrink: 0; }
+    .gsm-star {
+      background: none; border: none; font-size: 1.1rem; cursor: pointer;
+      color: #d1d5db; transition: color 0.1s; padding: 0; line-height: 1;
+    }
+    .gsm-star.on { color: #f59e0b; }
+    .gsm-star:hover { color: #f59e0b; }
+    .gsm-footer {
+      padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+      display: flex; gap: 0.75rem; align-items: center;
+    }
+    .gsm-save {
+      flex: 1; padding: 0.7rem; border-radius: 10px; border: none;
+      background: var(--accent); color: #fff; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: 0.2s;
+    }
+    .gsm-save:hover { background: var(--accent-dark); }
+    .gsm-saved-msg { font-size: 0.8rem; color: var(--green); font-weight: 600; opacity: 0; transition: opacity 0.3s; }
+    .gsm-saved-msg.show { opacity: 1; }
+    .gsm-login-btn {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.4rem 0.75rem; cursor: pointer; font-size: 0.75rem;
+      color: var(--muted); font-family: inherit; transition: 0.2s; white-space: nowrap;
+    }
+    .gsm-login-btn:hover { border-color: var(--accent); color: var(--accent); }
+    /* 管理者ログインオーバーレイ */
+    .admin-overlay {
+      position: fixed; inset: 0; z-index: 700;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .admin-overlay.open { opacity: 1; pointer-events: all; }
+    .admin-panel {
+      background: var(--bg); border-radius: 20px;
+      padding: 2rem; width: 320px; box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      transform: scale(0.94); transition: transform 0.3s;
+    }
+    .admin-overlay.open .admin-panel { transform: scale(1); }
+    .admin-panel h3 { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.3rem; }
+    .admin-panel p { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .admin-input {
+      width: 100%; padding: 0.65rem 0.9rem; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--bg);
+      font-size: 0.9rem; color: var(--text); font-family: inherit;
+      outline: none; margin-bottom: 0.75rem; transition: border-color 0.2s;
+    }
+    .admin-input:focus { border-color: var(--accent); }
+    .admin-submit {
+      width: 100%; padding: 0.7rem; border-radius: 10px; border: none;
+      background: var(--accent); color: #fff; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: 0.2s;
+    }
+    .admin-submit:hover { background: var(--accent-dark); }
+    .admin-err { font-size: 0.78rem; color: #dc2626; margin-top: 0.5rem; min-height: 1.2em; }
+    .admin-cancel {
+      width: 100%; padding: 0.5rem; margin-top: 0.5rem; border-radius: 8px;
+      border: 1px solid var(--border); background: none; cursor: pointer;
+      font-size: 0.82rem; color: var(--muted); font-family: inherit; transition: 0.2s;
+    }
+    .admin-cancel:hover { background: var(--bg-off); }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; }
@@ -959,11 +1228,11 @@
       .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
       .scroll-indicator { display: none; }
       .ctrl-wrapper { bottom: 0.75rem; right: 0.75rem; }
-      .ctrl-shell { padding-bottom: 52px; }
-      .ctrl-body { width: 200px; height: 82px; border-radius: 61px; }
-      .ctrl-grip { width: 72px; height: 53px; }
-      .ctrl-grip:first-child { border-radius: 14px 3px 34px 40px; }
-      .ctrl-grip:last-child  { border-radius: 3px 12px 40px 34px; }
+      .ctrl-shell { padding-bottom: 42px; }
+      .ctrl-body { width: 200px; height: 82px; border-radius: 41px 41px 22px 22px; }
+      .ctrl-grip { width: 54px; height: 56px; }
+      .ctrl-grip:first-child { border-radius: 16px 3px 32px 40px; }
+      .ctrl-grip:last-child  { border-radius: 3px 16px 40px 32px; }
       .ctrl-stick { width: 26px; height: 26px; }
       .ctrl-stick::after { width: 11px; height: 11px; }
     }
@@ -1046,7 +1315,7 @@
 <!-- ===== NAV ===== -->
 <nav id="nav">
   <div class="nav-inner">
-    <div class="nav-logo">山中康寛</div>
+    <button class="nav-logo" id="hobbyBtn" title="趣味ページを見る">山中康寛</button>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#works">Works</a></li>
@@ -1097,11 +1366,11 @@
       <div class="hero-stats">
         <div>
           <div class="stat-num">5+</div>
-          <div class="stat-label">年のフリーランス経験</div>
+          <div class="stat-label">年のエンジニア経験</div>
         </div>
         <div>
-          <div class="stat-num">30+</div>
-          <div class="stat-label">支援プロジェクト数</div>
+          <div class="stat-num">官公庁</div>
+          <div class="stat-label">向けシステム実績</div>
         </div>
         <div>
           <div class="stat-num">100%</div>
@@ -1115,24 +1384,24 @@
       <p class="panel-title">技術スタック — 習熟度</p>
       <div class="panel-skill-list" id="heroSkills">
         <div>
-          <div class="p-skill-header"><span>React / Next.js</span><span class="p-skill-pct">92%</span></div>
-          <div class="p-skill-track"><div class="p-skill-fill" data-pct="92"></div></div>
-        </div>
-        <div>
-          <div class="p-skill-header"><span>TypeScript</span><span class="p-skill-pct">88%</span></div>
+          <div class="p-skill-header"><span>VBA / Power Automate</span><span class="p-skill-pct">88%</span></div>
           <div class="p-skill-track"><div class="p-skill-fill" data-pct="88"></div></div>
         </div>
         <div>
-          <div class="p-skill-header"><span>Node.js / API</span><span class="p-skill-pct">80%</span></div>
-          <div class="p-skill-track"><div class="p-skill-fill" data-pct="80"></div></div>
+          <div class="p-skill-header"><span>Java / Spring MVC</span><span class="p-skill-pct">82%</span></div>
+          <div class="p-skill-track"><div class="p-skill-fill" data-pct="82"></div></div>
         </div>
         <div>
-          <div class="p-skill-header"><span>UI / Figma</span><span class="p-skill-pct">75%</span></div>
-          <div class="p-skill-track"><div class="p-skill-fill" data-pct="75"></div></div>
+          <div class="p-skill-header"><span>HTML / CSS / JavaScript</span><span class="p-skill-pct">78%</span></div>
+          <div class="p-skill-track"><div class="p-skill-fill" data-pct="78"></div></div>
         </div>
         <div>
-          <div class="p-skill-header"><span>AWS / DevOps</span><span class="p-skill-pct">65%</span></div>
+          <div class="p-skill-header"><span>Python</span><span class="p-skill-pct">65%</span></div>
           <div class="p-skill-track"><div class="p-skill-fill" data-pct="65"></div></div>
+        </div>
+        <div>
+          <div class="p-skill-header"><span>AWS</span><span class="p-skill-pct">60%</span></div>
+          <div class="p-skill-track"><div class="p-skill-fill" data-pct="60"></div></div>
         </div>
       </div>
     </div>
@@ -1153,18 +1422,18 @@
     </div>
     <div class="about-grid">
       <div class="about-text" data-aos="fade-right" data-aos-delay="100">
-        <p>はじめまして。フリーランスエンジニアの<strong>山中 康寛</strong>です。2025 年より独立し、SaaS・EC・メディアなど幅広い領域でフロントエンドを中心に開発しています。</p>
-        <p>ユーザー体験を最優先に、<strong>パフォーマンスとアクセシビリティ</strong>を意識したコードを書くことが得意です。デザインツールも扱えるため、デザイナー不在のプロジェクトでも UI 提案から実装まで一貫して担当できます。</p>
-        <p>現在はリモート案件を優先しています。まずはお気軽にご相談ください。</p>
+        <p>はじめまして。エンジニアの<strong>山中 康寛</strong>です。官公庁向けWEBシステムの開発・保守を3年間経験後、VBA・Power Automate・Python を活用した業務自動化や AWS クラウド運用保守に携わり、2025 年よりフリーランスとして活動しています。</p>
+        <p>Java(Spring MVC) / COBOL による<strong>大規模レガシーシステムの保守</strong>から、RPA ツールを使った<strong>業務効率化・自動化</strong>まで幅広いフェーズの経験が強みです。"動いて当たり前"が求められる官公庁案件で培った高い品質意識と、現場課題を素早くシステムで解決する実行力で貢献します。</p>
+        <p>現在はリモート案件を中心に、業務自動化・既存システム改善・クラウド移行支援を承っています。まずはお気軽にご相談ください。</p>
         <div class="about-tags">
-          <span class="tag">React</span>
-          <span class="tag">Next.js</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">Node.js</span>
-          <span class="tag">GraphQL</span>
-          <span class="tag">Figma</span>
+          <span class="tag">Java</span>
+          <span class="tag">Spring MVC</span>
+          <span class="tag">COBOL</span>
+          <span class="tag">HTML / CSS / JS</span>
+          <span class="tag">VBA</span>
+          <span class="tag">Power Automate</span>
+          <span class="tag">Python</span>
           <span class="tag">AWS</span>
-          <span class="tag">Docker</span>
         </div>
       </div>
       <div data-aos="fade-left" data-aos-delay="150">
@@ -1192,18 +1461,18 @@
       <!-- Card 1 -->
       <article class="card" data-aos="fade-up" data-aos-delay="0">
         <div class="card-thumb">
-          <div class="card-thumb-inner">🛒</div>
+          <div class="card-thumb-inner">🏛️</div>
           <div class="card-thumb-overlay"></div>
         </div>
         <div class="card-body">
-          <p class="card-category">E-Commerce</p>
-          <h3 class="card-title">ShopStream — ヘッドレス EC サイト</h3>
-          <p class="card-desc">Next.js + Shopify Storefront API を用いたヘッドレスコマース。Core Web Vitals オールグリーン達成、コンバージョン率 28% 改善。</p>
+          <p class="card-category">Government / Public Sector</p>
+          <h3 class="card-title">官公庁向け業務WEBシステム AP保守</h3>
+          <p class="card-desc">数千名規模の職員が利用する官公庁向け基幹WEBシステムの機能追加・障害対応・性能改善を3年間担当。COBOL レガシーとの連携も含む複雑な要件に対応し、高い可用性を維持。</p>
           <div class="card-tags">
-            <span class="card-tag">Next.js</span>
-            <span class="card-tag">TypeScript</span>
-            <span class="card-tag">Shopify</span>
-            <span class="card-tag">Tailwind</span>
+            <span class="card-tag">Java</span>
+            <span class="card-tag">Spring MVC</span>
+            <span class="card-tag">COBOL</span>
+            <span class="card-tag">HTML / CSS / JS</span>
           </div>
           <div class="card-actions">
             <a href="#" class="card-btn card-btn-demo">
@@ -1221,18 +1490,18 @@
       <!-- Card 2 -->
       <article class="card" data-aos="fade-up" data-aos-delay="100">
         <div class="card-thumb">
-          <div class="card-thumb-inner">📊</div>
+          <div class="card-thumb-inner">⚙️</div>
           <div class="card-thumb-overlay"></div>
         </div>
         <div class="card-body">
-          <p class="card-category">SaaS / Dashboard</p>
-          <h3 class="card-title">DataLens — アナリティクスダッシュボード</h3>
-          <p class="card-desc">リアルタイムデータ可視化 SaaS の管理画面を 0→1 構築。WebSocket + React Query でリアルタイム更新、月次アクティブ 3,000 社以上。</p>
+          <p class="card-category">業務自動化 / RPA</p>
+          <h3 class="card-title">社内業務プロセス自動化システム</h3>
+          <p class="card-desc">手作業で行われていたデータ集計・帳票作成・メール通知などをVBA・Power Automate・Pythonで自動化。月100時間超の工数削減を実現し、ヒューマンエラーも撲滅。</p>
           <div class="card-tags">
-            <span class="card-tag">React</span>
-            <span class="card-tag">Recharts</span>
-            <span class="card-tag">WebSocket</span>
-            <span class="card-tag">Node.js</span>
+            <span class="card-tag">VBA</span>
+            <span class="card-tag">Power Automate</span>
+            <span class="card-tag">Python</span>
+            <span class="card-tag">Excel</span>
           </div>
           <div class="card-actions">
             <a href="#" class="card-btn card-btn-demo">
@@ -1250,18 +1519,18 @@
       <!-- Card 3 -->
       <article class="card" data-aos="fade-up" data-aos-delay="200">
         <div class="card-thumb">
-          <div class="card-thumb-inner">✍️</div>
+          <div class="card-thumb-inner">☁️</div>
           <div class="card-thumb-overlay"></div>
         </div>
         <div class="card-body">
-          <p class="card-category">Media / Blog</p>
-          <h3 class="card-title">Inkwell — テックメディアサイト</h3>
-          <p class="card-desc">月間 50 万 PV のテックメディアをリプレイス。Contentful + Next.js ISR により記事配信を高速化、直帰率 18% 低下、SEO スコア 40pt 向上。</p>
+          <p class="card-category">Cloud / Operations</p>
+          <h3 class="card-title">AWS 運用監視・アラート自動化基盤</h3>
+          <p class="card-desc">AWS CloudWatch + Python Lambda を組み合わせた運用監視基盤を構築。障害検知から担当者への自動通知・初動対応スクリプト実行までをパイプライン化し、MTTR を大幅に短縮。</p>
           <div class="card-tags">
-            <span class="card-tag">Next.js</span>
-            <span class="card-tag">Contentful</span>
-            <span class="card-tag">ISR</span>
-            <span class="card-tag">SEO</span>
+            <span class="card-tag">AWS</span>
+            <span class="card-tag">Python</span>
+            <span class="card-tag">Lambda</span>
+            <span class="card-tag">CloudWatch</span>
           </div>
           <div class="card-actions">
             <a href="#" class="card-btn card-btn-demo">
@@ -1286,7 +1555,7 @@
     <div data-aos="fade-up">
       <span class="section-eyebrow">Skills</span>
       <h2 class="section-title">技術<span>スキル</span></h2>
-      <p class="section-lead">フロントエンドを軸に、バックエンド・インフラまで幅広く対応できます。</p>
+      <p class="section-lead">官公庁システム開発で磨いたバックエンド・レガシー対応力と、RPA・クラウド運用で培った自動化技術が強みです。</p>
     </div>
     <div class="skills-layout">
       <div class="skill-radar-wrap" data-aos="fade-right">
@@ -1298,38 +1567,45 @@
       <div class="skill-bars-wrap" id="skillBars" data-aos="fade-left" data-aos-delay="100">
         <div class="skill-item">
           <div class="skill-header">
-            <span class="skill-name">React / Next.js</span>
-            <span class="skill-pct">92%</span>
-          </div>
-          <div class="skill-track"><div class="skill-fill" data-pct="92"></div></div>
-        </div>
-        <div class="skill-item">
-          <div class="skill-header">
-            <span class="skill-name">TypeScript</span>
+            <span class="skill-name">VBA / Power Automate</span>
             <span class="skill-pct">88%</span>
           </div>
           <div class="skill-track"><div class="skill-fill" data-pct="88"></div></div>
         </div>
         <div class="skill-item">
           <div class="skill-header">
-            <span class="skill-name">Node.js / API</span>
-            <span class="skill-pct">80%</span>
+            <span class="skill-name">Java / Spring MVC</span>
+            <span class="skill-pct">82%</span>
           </div>
-          <div class="skill-track"><div class="skill-fill" data-pct="80"></div></div>
+          <div class="skill-track"><div class="skill-fill" data-pct="82"></div></div>
         </div>
         <div class="skill-item">
           <div class="skill-header">
-            <span class="skill-name">UI / Figma</span>
-            <span class="skill-pct">75%</span>
+            <span class="skill-name">HTML / CSS / JavaScript</span>
+            <span class="skill-pct">78%</span>
           </div>
-          <div class="skill-track"><div class="skill-fill" data-pct="75"></div></div>
+          <div class="skill-track"><div class="skill-fill" data-pct="78"></div></div>
         </div>
         <div class="skill-item">
           <div class="skill-header">
-            <span class="skill-name">AWS / DevOps</span>
+            <span class="skill-name">Python</span>
             <span class="skill-pct">65%</span>
           </div>
           <div class="skill-track"><div class="skill-fill" data-pct="65"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">AWS / Cloud</span>
+            <span class="skill-pct">60%</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-pct="60"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">COBOL（レガシー対応）</span>
+            <span class="skill-pct">52%</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-pct="52"></div></div>
         </div>
       </div>
     </div>
@@ -1347,45 +1623,39 @@
     <div class="timeline" data-aos="fade-up" data-aos-delay="100">
 
       <div class="tl-item">
-        <div class="tl-date">2012.04</div>
-        <div class="tl-title">○○大学 情報工学部 入学</div>
+        <div class="tl-date">2014.04</div>
+        <div class="tl-title">高知工科大学 情報学部 入学</div>
         <span class="tl-sub edu">学歴</span>
-        <p class="tl-desc">プログラミングを独学で開始。在学中に Web アプリ開発に興味を持ち、個人プロジェクトを複数リリース。</p>
+        <p class="tl-desc">C,Java,PHP,HTML/CSS/JavaScript等のプログラミング。在学中は、学内HPの運営・Webリニューアルプロジェクトに参画し、WEBページ制作を担当。<a href="https://www.info.kochi-tech.ac.jp/photo_contest/index.shtml" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;">📷 フォトコンテスト参加実績はこちら →</a></p>
       </div>
 
       <div class="tl-item">
-        <div class="tl-date">2016.03</div>
-        <div class="tl-title">○○大学 情報工学部 卒業</div>
+        <div class="tl-date">2018.03</div>
+        <div class="tl-title">高知工科大学 情報学部 卒業</div>
         <span class="tl-sub edu">学歴</span>
-        <p class="tl-desc">卒業論文「大規模 Web アプリにおけるパフォーマンス最適化手法」を執筆・発表。</p>
+        <p class="tl-desc">卒業論文「fMRI による感情のブレインデコーディングにおける OASIS の評価」を執筆・発表。在学中から培ったロジカルな問題解決力を携えて就職。<a href="https://www.lab.kochi-tech.ac.jp/yoshilab/thesis/1180390.pdf" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;">📄 卒業論文 PDF →</a></p>
+     https://www.lab.kochi-tech.ac.jp/yoshilab/thesis/1180390.pdf
       </div>
 
       <div class="tl-item">
-        <div class="tl-date">2016.04</div>
-        <div class="tl-title">○○株式会社 入社</div>
+        <div class="tl-date">2018.04</div>
+        <div class="tl-title">SIer 入社 — 官公庁向けシステム開発部門</div>
         <span class="tl-sub work">職歴 / 正社員</span>
-        <p class="tl-desc">Webエンジニアとして新卒入社。Ruby on Rails + jQuery を用いた社内向け業務システムの開発・保守を担当。</p>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-date">2018.09</div>
-        <div class="tl-title">○○テック株式会社 入社</div>
-        <span class="tl-sub work">職歴 / 正社員</span>
-        <p class="tl-desc">フロントエンドエンジニアとして転職。React を主軸に、SaaS プロダクトの UI 設計・実装を担当。チームリードも経験。</p>
+        <p class="tl-desc">Java (Spring MVC) / COBOL / HTML・CSS・JavaScript を用いた官公庁向けWEBシステムのAP開発・保守を担当。数千名規模の職員が日常的に使う基幹システムの機能追加・障害対応・性能改善まで幅広く携わり、高い品質意識と実装力を培う。</p>
       </div>
 
       <div class="tl-item">
         <div class="tl-date">2021.04</div>
-        <div class="tl-title">フリーランスとして独立</div>
-        <span class="tl-sub free">フリーランス</span>
-        <p class="tl-desc">フリーランスエンジニアとして独立。スタートアップ・大手企業を問わず、React / Next.js を中心としたフロントエンド開発を提供。</p>
+        <div class="tl-title">業務自動化・クラウド運用保守エンジニアへ転向</div>
+        <span class="tl-sub work">職歴 / 正社員</span>
+        <p class="tl-desc">VBA・Power Automate・Python を活用した社内業務プロセスの自動化と、AWS 上でのシステム運用保守を担当。繰り返し作業の RPA 化により月 100 時間超の工数削減を実現。CloudWatch + Lambda による監視・アラート自動化基盤の構築にも貢献。</p>
       </div>
 
       <div class="tl-item">
         <div class="tl-date">2025.01</div>
-        <div class="tl-title">山中康寛エンジニアリング 開業</div>
+        <div class="tl-title">フリーランスエンジニアとして独立</div>
         <span class="tl-sub free">現在</span>
-        <p class="tl-desc">個人事業を正式に開業。技術顧問・受託開発・UI 設計支援など、幅広い形で企業・スタートアップの開発を支援中。</p>
+        <p class="tl-desc">官公庁案件で培った高い品質意識と、業務自動化・クラウド運用の実績を武器に独立。レガシーシステムのモダナイズ支援・業務効率化・クラウド移行など、幅広いニーズに対応中。</p>
       </div>
 
     </div>
@@ -1431,7 +1701,7 @@
             </div>
             <div>
               <div class="contact-label">X (Twitter)</div>
-              <div class="contact-value">@yuki_dev</div>
+              <div class="contact-value">@mitei_dev</div>
             </div>
           </a>
         </div>
@@ -1478,6 +1748,392 @@
   </div>
 </div>
 
+<!-- ===== HOBBY PAGE ===== -->
+<div class="hobby-page" id="hobbyPage" aria-hidden="true">
+
+  <nav class="hobby-nav">
+    <button class="hobby-back" id="hobbyBack">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      ポートフォリオに戻る
+    </button>
+    <span class="hobby-nav-title">山中康寛の趣味</span>
+    <div style="width:140px"></div>
+  </nav>
+
+  <div class="hobby-hero">
+    <div class="hobby-hero-emoji">🎮🍺🍳</div>
+    <h1>仕事以外の話、しましょう</h1>
+    <p>エンジニアである前に、ゲーマーで、飲んべえで、料理好きな人間です。</p>
+  </div>
+
+  <div class="hobby-tabs" id="hobbyTabs">
+    <button class="hobby-tab active" data-tab="games">🎮 ゲーム実績</button>
+    <button class="hobby-tab" data-tab="drinks">🍺 お酒実績</button>
+    <button class="hobby-tab" data-tab="cooking">🍳 料理</button>
+    <button class="hobby-tab" data-tab="movies">🎬 映画・アニメ</button>
+    <button class="hobby-tab" data-tab="travel">✈️ 旅行</button>
+  </div>
+
+  <div class="hobby-content">
+
+    <!-- ゲーム実績 -->
+    <div class="hobby-section active" id="tab-games">
+      <div class="hobby-section-header">
+        <h2>🎮 歴代プレイゲーム実績</h2>
+        <p>小学生から続くゲーム歴。RPG・アクション・対戦ゲーム問わず何でもやります。</p>
+      </div>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">💡 タイトルカードをクリックするとシリーズ一覧・プレイ記録の編集ができます</p>
+      <div class="game-grid">
+        <div class="game-card" data-series="pokemon" style="cursor:pointer">
+          <div class="game-emoji">🔴</div>
+          <div class="game-title">ポケットモンスター シリーズ</div>
+          <div class="game-genre">RPG</div>
+          <div class="game-stars">★★★★★</div>
+          <span class="game-badge badge-loved">永遠の相棒</span>
+          <p class="game-note">初代〜最新作まで全作プレイ。幼少期から現在まで続く原点。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+        <div class="game-card" data-series="mhunter" style="cursor:pointer">
+          <div class="game-emoji">🐉</div>
+          <div class="game-title">モンスターハンター シリーズ</div>
+          <div class="game-genre">アクション・ハンティング</div>
+          <div class="game-stars">★★★★★</div>
+          <span class="game-badge badge-clear">HR999 到達</span>
+          <p class="game-note">睡眠時間を削った伝説の一本。ほぼすべての装備を作成。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+        <div class="game-card" data-series="zelda" style="cursor:pointer">
+          <div class="game-emoji">🌿</div>
+          <div class="game-title">ゼルダの伝説 シリーズ</div>
+          <div class="game-genre">アドベンチャー</div>
+          <div class="game-stars">★★★★★</div>
+          <span class="game-badge badge-clear">全祠クリア</span>
+          <p class="game-note">オープンワールドの革命。毎日ちょっとずつ遊ぶのが至福。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+        <div class="game-card" data-series="apex" style="cursor:pointer">
+          <div class="game-emoji">🔥</div>
+          <div class="game-title">Apex Legends</div>
+          <div class="game-genre">FPS・バトルロイヤル</div>
+          <div class="game-stars">★★★★☆</div>
+          <span class="game-badge badge-clear">ダイヤ到達</span>
+          <p class="game-note">仲間と深夜に叫びながらやるのが一番楽しい。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+        <div class="game-card" data-series="soulsborne" style="cursor:pointer">
+          <div class="game-emoji">⚔️</div>
+          <div class="game-title">ELDEN RING / ソウルシリーズ</div>
+          <div class="game-genre">アクションRPG</div>
+          <div class="game-stars">★★★★★</div>
+          <span class="game-badge badge-clear">全ボス撃破</span>
+          <p class="game-note">死にゲーの最高傑作。折れない心を鍛えられた。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+        <div class="game-card" data-series="fifa" style="cursor:pointer">
+          <div class="game-emoji">⚽</div>
+          <div class="game-title">FIFA / EA Sports FC シリーズ</div>
+          <div class="game-genre">スポーツ</div>
+          <div class="game-stars">★★★★☆</div>
+          <span class="game-badge badge-playing">毎年更新中</span>
+          <p class="game-note">Ultimate Team に課金を続けて数年。いつ抜け出せるのか。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+        <div class="game-card" data-series="doubutsu" style="cursor:pointer">
+          <div class="game-emoji">🏝️</div>
+          <div class="game-title">どうぶつの森 シリーズ</div>
+          <div class="game-genre">シミュレーション</div>
+          <div class="game-stars">★★★★☆</div>
+          <span class="game-badge badge-clear">島★5 達成</span>
+          <p class="game-note">コロナ禍の精神的支柱。島がなければ乗り越えられなかった。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+        <div class="game-card" data-series="splatoon" style="cursor:pointer">
+          <div class="game-emoji">🎯</div>
+          <div class="game-title">スプラトゥーン シリーズ</div>
+          <div class="game-genre">TPS・シューター</div>
+          <div class="game-stars">★★★★☆</div>
+          <span class="game-badge badge-playing">ウデマエ X</span>
+          <p class="game-note">任天堂の天才。こんなに楽しい対戦ゲームはない。</p>
+          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- お酒実績 -->
+    <div class="hobby-section" id="tab-drinks">
+      <div class="hobby-section-header">
+        <h2>🍺 今までに飲んだお酒の実績</h2>
+        <p>量より質派。好みのジャンルを開拓し続けています。</p>
+      </div>
+      <div class="drink-grid">
+        <div class="drink-card">
+          <div class="drink-emoji">🍺</div>
+          <div class="drink-name">クラフトビール</div>
+          <div class="drink-desc">IPA / スタウト / ヘイジーが特に好き。醸造所めぐりが趣味。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div>
+          </div>
+        </div>
+        <div class="drink-card">
+          <div class="drink-emoji">🥃</div>
+          <div class="drink-name">ウイスキー</div>
+          <div class="drink-desc">ハイボールで気軽に。山崎・白州・響が三大好き銘柄。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot off"></div>
+          </div>
+        </div>
+        <div class="drink-card">
+          <div class="drink-emoji">🍶</div>
+          <div class="drink-name">日本酒</div>
+          <div class="drink-desc">辛口中心。大吟醸の香りに目覚めてしまい、出費が増えた。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot off"></div>
+          </div>
+        </div>
+        <div class="drink-card">
+          <div class="drink-emoji">🍋</div>
+          <div class="drink-name">レモンサワー</div>
+          <div class="drink-desc">定番中の定番。ギンギンに冷えた一杯で全てが解決する。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot off"></div>
+          </div>
+        </div>
+        <div class="drink-card">
+          <div class="drink-emoji">🍷</div>
+          <div class="drink-name">赤ワイン</div>
+          <div class="drink-desc">肉料理のお供に。タンニン強めのフルボディが好み。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot off"></div><div class="drink-dot off"></div>
+          </div>
+        </div>
+        <div class="drink-card">
+          <div class="drink-emoji">🍸</div>
+          <div class="drink-name">カクテル</div>
+          <div class="drink-desc">モヒート・カシスオレンジ・ジントニックが御三家。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot off"></div><div class="drink-dot off"></div>
+          </div>
+        </div>
+        <div class="drink-card">
+          <div class="drink-emoji">🍵</div>
+          <div class="drink-name">日本茶 / ノンアル</div>
+          <div class="drink-desc">深蒸し茶が好き。仕事中は緑茶一択。飲み会翌日は麦茶。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div>
+          </div>
+        </div>
+        <div class="drink-card">
+          <div class="drink-emoji">🫗</div>
+          <div class="drink-name">泡盛 / 焼酎</div>
+          <div class="drink-desc">旅先で飲む地酒が一番美味しい。沖縄の泡盛はまた別格。</div>
+          <div class="drink-meter">
+            <div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot on"></div><div class="drink-dot off"></div><div class="drink-dot off"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 料理 -->
+    <div class="hobby-section" id="tab-cooking">
+      <div class="hobby-section-header">
+        <h2>🍳 料理</h2>
+        <p>週3〜4回は自炊します。シンプルな素材を活かす料理が得意。</p>
+      </div>
+      <div class="cook-grid">
+        <div class="cook-card">
+          <div class="cook-thumb">🍛</div>
+          <div class="cook-body">
+            <div class="cook-title">スパイスカレー</div>
+            <div class="cook-desc">ホールスパイスから作る本格派。週1ペースで作り、レシピを毎回微調整している。</div>
+            <span class="cook-level">⭐ 得意料理 No.1</span>
+          </div>
+        </div>
+        <div class="cook-card">
+          <div class="cook-thumb">🍝</div>
+          <div class="cook-body">
+            <div class="cook-title">カルボナーラ</div>
+            <div class="cook-desc">生クリームは使わない派。卵・パルミジャーノ・グアンチャーレで作る本場スタイル。</div>
+            <span class="cook-level">⭐ こだわりの一品</span>
+          </div>
+        </div>
+        <div class="cook-card">
+          <div class="cook-thumb">🍗</div>
+          <div class="cook-body">
+            <div class="cook-title">鶏もも肉のソテー</div>
+            <div class="cook-desc">パリパリ皮に仕上げるのがこだわり。ガーリックバター醤油ソースが鉄板。</div>
+            <span class="cook-level">⭐ 定番・安定</span>
+          </div>
+        </div>
+        <div class="cook-card">
+          <div class="cook-thumb">🥗</div>
+          <div class="cook-body">
+            <div class="cook-title">サラダ全般</div>
+            <div class="cook-desc">ドレッシングは手作り。オリーブオイル・レモン・塩だけのシンプルなものが好き。</div>
+            <span class="cook-level">🥦 毎日の習慣</span>
+          </div>
+        </div>
+        <div class="cook-card">
+          <div class="cook-thumb">🍜</div>
+          <div class="cook-body">
+            <div class="cook-title">自家製ラーメン</div>
+            <div class="cook-desc">豚骨・醤油・塩などスープから作る。完成まで半日かかるが、その分うまい。</div>
+            <span class="cook-level">🔥 気合いの一品</span>
+          </div>
+        </div>
+        <div class="cook-card">
+          <div class="cook-thumb">🥩</div>
+          <div class="cook-body">
+            <div class="cook-title">ステーキ</div>
+            <div class="cook-desc">厚切り肉をフライパンで焼くだけでいい。塩・コショウ・バターで十分。</div>
+            <span class="cook-level">🍖 シンプルイズベスト</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 映画・アニメ -->
+    <div class="hobby-section" id="tab-movies">
+      <div class="hobby-section-header">
+        <h2>🎬 映画・アニメ</h2>
+        <p>SF・サスペンス・バトルものが特に好き。週末に1〜2本は観ます。</p>
+      </div>
+      <div class="media-grid">
+        <div class="media-card">
+          <div class="media-emoji">🤖</div>
+          <div class="media-title">インターステラー</div>
+          <div class="media-sub">SF映画 / 2014</div>
+          <div class="media-stars">★★★★★</div>
+          <p class="game-note" style="margin-top:0.4rem">宇宙と時間と愛。観るたびに解釈が変わる名作。</p>
+        </div>
+        <div class="media-card">
+          <div class="media-emoji">🧱</div>
+          <div class="media-title">マトリックス</div>
+          <div class="media-sub">SF・アクション / 1999</div>
+          <div class="media-stars">★★★★★</div>
+          <p class="game-note" style="margin-top:0.4rem">すべての映像作品の前後に「マトリックス以前・以後」がある。</p>
+        </div>
+        <div class="media-card">
+          <div class="media-emoji">⚔️</div>
+          <div class="media-title">進撃の巨人</div>
+          <div class="media-sub">アニメ / 完結済</div>
+          <div class="media-stars">★★★★★</div>
+          <p class="game-note" style="margin-top:0.4rem">伏線と世界観の密度が異次元。最終回まで目が離せない。</p>
+        </div>
+        <div class="media-card">
+          <div class="media-emoji">🔮</div>
+          <div class="media-title">呪術廻戦</div>
+          <div class="media-sub">アニメ / 連載中</div>
+          <div class="media-stars">★★★★☆</div>
+          <p class="game-note" style="margin-top:0.4rem">バトルの演出が圧倒的。毎クール楽しみにしている。</p>
+        </div>
+        <div class="media-card">
+          <div class="media-emoji">🦸</div>
+          <div class="media-title">ワンパンマン</div>
+          <div class="media-sub">アニメ / 連載中</div>
+          <div class="media-stars">★★★★★</div>
+          <p class="game-note" style="margin-top:0.4rem">最強すぎて逆に悩むサイタマに共感しかない。</p>
+        </div>
+        <div class="media-card">
+          <div class="media-emoji">🎭</div>
+          <div class="media-title">ジョーカー</div>
+          <div class="media-sub">映画 / 2019</div>
+          <div class="media-stars">★★★★★</div>
+          <p class="game-note" style="margin-top:0.4rem">ホアキン・フェニックスの演技が全てを語る。ずっしり重い傑作。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 旅行 -->
+    <div class="hobby-section" id="tab-travel">
+      <div class="hobby-section-header">
+        <h2>✈️ 旅行記録</h2>
+        <p>美味しいものを食べるために旅に出ます。国内外問わず。</p>
+      </div>
+      <div class="travel-grid">
+        <div class="travel-card">
+          <div class="travel-emoji">🗼</div>
+          <div>
+            <div class="travel-name">東京 / 関東</div>
+            <div class="travel-desc">秋葉原・渋谷・新宿のゲームセンター巡りとラーメン巡りが目的。年に数回は来る。</div>
+          </div>
+        </div>
+        <div class="travel-card">
+          <div class="travel-emoji">🦌</div>
+          <div>
+            <div class="travel-name">京都 / 奈良</div>
+            <div class="travel-desc">古い街並みと神社仏閣が好き。夜の祇園と早朝の伏見稲荷が特に印象的。</div>
+          </div>
+        </div>
+        <div class="travel-card">
+          <div class="travel-emoji">🌺</div>
+          <div>
+            <div class="travel-name">沖縄</div>
+            <div class="travel-desc">泡盛と海と太陽。何度行っても飽きない。石垣島・宮古島にも行ってみたい。</div>
+          </div>
+        </div>
+        <div class="travel-card">
+          <div class="travel-emoji">⛩️</div>
+          <div>
+            <div class="travel-name">高知（地元）</div>
+            <div class="travel-desc">ひろめ市場のカツオのたたきと土佐の地酒は日本一。帰るたびに食べ過ぎる。</div>
+          </div>
+        </div>
+        <div class="travel-card">
+          <div class="travel-emoji">🗽</div>
+          <div>
+            <div class="travel-name">海外（行きたいリスト）</div>
+            <div class="travel-desc">アイスランド（オーロラ）・台湾（夜市）・ポルトガル（食と建築）が上位。いつか必ず。</div>
+          </div>
+        </div>
+        <div class="travel-card">
+          <div class="travel-emoji">🍜</div>
+          <div>
+            <div class="travel-name">グルメ遠征</div>
+            <div class="travel-desc">食べ歩き目的で年に数回遠征。ラーメン・スパイスカレー・クラフトビールの店を事前に調べ倒して行く。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ゲームシリーズモーダル -->
+  <div class="gsm-overlay" id="gsmOverlay">
+    <div class="gsm-panel">
+      <div class="gsm-handle"></div>
+      <div class="gsm-header">
+        <div class="gsm-header-left">
+          <span class="gsm-emoji" id="gsmEmoji"></span>
+          <div>
+            <div class="gsm-title" id="gsmTitle"></div>
+            <div class="gsm-count" id="gsmCount"></div>
+          </div>
+        </div>
+        <button class="gsm-close" id="gsmClose">✕</button>
+      </div>
+      <div class="gsm-body" id="gsmBody"></div>
+      <div class="gsm-footer">
+        <button class="gsm-save" id="gsmSave" style="display:none">💾 プレイ記録を保存</button>
+        <span class="gsm-saved-msg" id="gsmSavedMsg">✓ 保存しました！</span>
+        <button class="gsm-login-btn" id="gsmLoginBtn">🔑 管理者ログイン</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 管理者ログインパネル -->
+  <div class="admin-overlay" id="adminOverlay">
+    <div class="admin-panel">
+      <h3 id="adminPanelTitle">🔑 管理者ログイン</h3>
+      <p id="adminPanelDesc">メールアドレスとパスワードを入力してください</p>
+      <input class="admin-input" type="email"    id="adminEmail"    placeholder="メールアドレス">
+      <input class="admin-input" type="password" id="adminPassword" placeholder="パスワード">
+      <div class="admin-err" id="adminErr"></div>
+      <button class="admin-submit" id="adminSubmit">ログイン</button>
+      <button class="admin-cancel" id="adminCancel">キャンセル</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <p>&copy; 2026 <span>山中康寛 (Yasuhiro Yamanaka)</span>. All rights reserved.</p>
@@ -1489,6 +2145,316 @@
 <script>
   // ===== AOS INIT =====
   AOS.init({ duration: 700, once: true, offset: 60 });
+
+  // ===== GAME SERIES DATA =====
+  const GAME_SERIES = {
+    pokemon: { name:'ポケットモンスター シリーズ', emoji:'🔴', titles:[
+      {id:'pk_rg',    title:'赤・緑',                              year:'1996', dp:true,  ds:5},
+      {id:'pk_pikachu',title:'ピカチュウ版',                       year:'1998', dp:true,  ds:4},
+      {id:'pk_gs',    title:'金・銀',                              year:'1999', dp:true,  ds:5},
+      {id:'pk_crystal',title:'クリスタル',                         year:'2000', dp:true,  ds:4},
+      {id:'pk_rs',    title:'ルビー・サファイア',                   year:'2002', dp:true,  ds:4},
+      {id:'pk_frlg',  title:'ファイアレッド・リーフグリーン',       year:'2004', dp:true,  ds:4},
+      {id:'pk_emerald',title:'エメラルド',                         year:'2005', dp:true,  ds:5},
+      {id:'pk_dp',    title:'ダイヤモンド・パール',                 year:'2006', dp:true,  ds:4},
+      {id:'pk_plat',  title:'プラチナ',                            year:'2008', dp:true,  ds:4},
+      {id:'pk_hgss',  title:'ハートゴールド・ソウルシルバー',       year:'2009', dp:true,  ds:5},
+      {id:'pk_bw',    title:'ブラック・ホワイト',                   year:'2010', dp:true,  ds:4},
+      {id:'pk_bw2',   title:'ブラック2・ホワイト2',                 year:'2012', dp:true,  ds:4},
+      {id:'pk_xy',    title:'X・Y',                                year:'2013', dp:true,  ds:3},
+      {id:'pk_oras',  title:'オメガルビー・アルファサファイア',     year:'2014', dp:true,  ds:4},
+      {id:'pk_sm',    title:'サン・ムーン',                        year:'2016', dp:true,  ds:4},
+      {id:'pk_usum',  title:'ウルトラサン・ウルトラムーン',         year:'2017', dp:true,  ds:3},
+      {id:'pk_lgpe',  title:"Let's Go! ピカチュウ・イーブイ",       year:'2018', dp:false, ds:0},
+      {id:'pk_swsh',  title:'ソード・シールド',                    year:'2019', dp:true,  ds:3},
+      {id:'pk_bdsp',  title:'ブリリアントダイヤモンド・シャイニングパール', year:'2021', dp:true, ds:3},
+      {id:'pk_la',    title:'レジェンズ アルセウス',               year:'2022', dp:true,  ds:4},
+      {id:'pk_sv',    title:'スカーレット・バイオレット',           year:'2022', dp:true,  ds:4},
+    ]},
+    mhunter: { name:'モンスターハンター シリーズ', emoji:'🐉', titles:[
+      {id:'mh_1',     title:'モンスターハンター',                  year:'2004', dp:false, ds:0},
+      {id:'mh_g',     title:'モンスターハンター G',                year:'2005', dp:false, ds:0},
+      {id:'mh_dos',   title:'モンスターハンター ドス',             year:'2006', dp:true,  ds:4},
+      {id:'mh_tri',   title:'モンスターハンタートライ',            year:'2009', dp:true,  ds:4},
+      {id:'mh_3g',    title:'モンスターハンター3G',                year:'2011', dp:true,  ds:5},
+      {id:'mh_4',     title:'モンスターハンター4',                 year:'2013', dp:true,  ds:5},
+      {id:'mh_4g',    title:'モンスターハンター4G',                year:'2014', dp:true,  ds:5},
+      {id:'mh_x',     title:'モンスターハンタークロス',            year:'2015', dp:true,  ds:4},
+      {id:'mh_xx',    title:'モンスターハンターダブルクロス',      year:'2017', dp:true,  ds:4},
+      {id:'mh_world', title:'モンスターハンター：ワールド',        year:'2018', dp:true,  ds:5},
+      {id:'mh_ice',   title:'アイスボーン（拡張）',               year:'2019', dp:true,  ds:5},
+      {id:'mh_rise',  title:'モンスターハンターライズ',            year:'2021', dp:true,  ds:4},
+      {id:'mh_sun',   title:'サンブレイク（拡張）',               year:'2022', dp:true,  ds:4},
+      {id:'mh_wilds', title:'モンスターハンターワイルズ',          year:'2025', dp:false, ds:0},
+    ]},
+    zelda: { name:'ゼルダの伝説 シリーズ', emoji:'🌿', titles:[
+      {id:'z_alttp',  title:'神々のトライフォース',                year:'1991', dp:true,  ds:5},
+      {id:'z_la',     title:'夢をみる島',                         year:'1993', dp:true,  ds:4},
+      {id:'z_oot',    title:'時のオカリナ',                       year:'1998', dp:true,  ds:5},
+      {id:'z_mm',     title:'ムジュラの仮面',                     year:'2000', dp:true,  ds:5},
+      {id:'z_ww',     title:'風のタクト',                         year:'2002', dp:true,  ds:4},
+      {id:'z_tp',     title:'トワイライトプリンセス',              year:'2006', dp:true,  ds:4},
+      {id:'z_oot3d',  title:'時のオカリナ 3D',                   year:'2011', dp:true,  ds:5},
+      {id:'z_ss',     title:'スカイウォードソード',               year:'2011', dp:true,  ds:3},
+      {id:'z_botw',   title:'ブレス オブ ザ ワイルド',            year:'2017', dp:true,  ds:5},
+      {id:'z_totk',   title:'ティアーズ オブ ザ キングダム',      year:'2023', dp:true,  ds:5},
+    ]},
+    apex: { name:'Apex Legends', emoji:'🔥', titles:[
+      {id:'apex_s1',  title:'シーズン1〜5（黎明期）',              year:'2019-20', dp:true,  ds:4},
+      {id:'apex_s6',  title:'シーズン6〜10',                      year:'2020-21', dp:true,  ds:4},
+      {id:'apex_s11', title:'シーズン11〜15',                     year:'2021-23', dp:true,  ds:5},
+      {id:'apex_s16', title:'シーズン16〜20',                     year:'2023-24', dp:true,  ds:4},
+      {id:'apex_s21', title:'シーズン21〜現在',                   year:'2024-',   dp:false, ds:0},
+    ]},
+    soulsborne: { name:'ELDEN RING / ソウルシリーズ', emoji:'⚔️', titles:[
+      {id:'sl_demon',  title:'デモンズソウル',                    year:'2009', dp:false, ds:0},
+      {id:'sl_ds1',    title:'ダークソウル',                      year:'2011', dp:true,  ds:5},
+      {id:'sl_ds2',    title:'ダークソウル2',                     year:'2014', dp:true,  ds:4},
+      {id:'sl_bb',     title:'ブラッドボーン',                    year:'2015', dp:true,  ds:5},
+      {id:'sl_ds3',    title:'ダークソウル3',                     year:'2016', dp:true,  ds:5},
+      {id:'sl_sekiro', title:'隻狼 SEKIRO',                      year:'2019', dp:true,  ds:5},
+      {id:'sl_er',     title:'ELDEN RING',                       year:'2022', dp:true,  ds:5},
+      {id:'sl_er_dlc', title:'ELDEN RING 影の地（DLC）',         year:'2024', dp:true,  ds:5},
+    ]},
+    fifa: { name:'FIFA / EA Sports FC シリーズ', emoji:'⚽', titles:[
+      {id:'fifa_19',   title:'FIFA 19',                          year:'2018', dp:true,  ds:3},
+      {id:'fifa_20',   title:'FIFA 20',                          year:'2019', dp:true,  ds:3},
+      {id:'fifa_21',   title:'FIFA 21',                          year:'2020', dp:true,  ds:4},
+      {id:'fifa_22',   title:'FIFA 22',                          year:'2021', dp:true,  ds:4},
+      {id:'fifa_23',   title:'FIFA 23',                          year:'2022', dp:true,  ds:4},
+      {id:'eafc_24',   title:'EA SPORTS FC 24',                 year:'2023', dp:true,  ds:3},
+      {id:'eafc_25',   title:'EA SPORTS FC 25',                 year:'2024', dp:false, ds:0},
+    ]},
+    doubutsu: { name:'どうぶつの森 シリーズ', emoji:'🏝️', titles:[
+      {id:'anm_wild',  title:'おいでよ どうぶつの森',             year:'2005', dp:true,  ds:4},
+      {id:'anm_new',   title:'とびだせ どうぶつの森',             year:'2012', dp:true,  ds:5},
+      {id:'anm_nl',    title:'とびだせ どうぶつの森 amiibo+',    year:'2016', dp:true,  ds:4},
+      {id:'anm_nh',    title:'あつまれ どうぶつの森',             year:'2020', dp:true,  ds:5},
+    ]},
+    splatoon: { name:'スプラトゥーン シリーズ', emoji:'🎯', titles:[
+      {id:'sp_1',      title:'スプラトゥーン',                    year:'2015', dp:true,  ds:4},
+      {id:'sp_2',      title:'スプラトゥーン2',                   year:'2017', dp:true,  ds:5},
+      {id:'sp_2_oc',   title:'スプラトゥーン2 オクト・エキスパンション', year:'2018', dp:true, ds:5},
+      {id:'sp_3',      title:'スプラトゥーン3',                   year:'2022', dp:true,  ds:4},
+      {id:'sp_3_se',   title:'スプラトゥーン3 サイド・オーダー', year:'2024', dp:false, ds:0},
+    ]},
+  };
+
+  // ===== FIREBASE 初期化 =====
+  // 設定は firebase-config.js (window.FIREBASE_CONFIG) から読み込みます
+  let fbApp = null, fbDb = null, fbAuth = null;
+  const _cfg = window.FIREBASE_CONFIG;
+  const FB_CONFIGURED = _cfg && _cfg.apiKey && _cfg.apiKey !== 'YOUR_API_KEY';
+
+  if (FB_CONFIGURED) {
+    try {
+      fbApp  = firebase.initializeApp(_cfg);
+      fbDb   = firebase.database();
+      fbAuth = firebase.auth();
+    } catch(e) { console.warn('Firebase init failed:', e); }
+  }
+
+  // データ読み込み：Firebase → fallback localStorage
+  async function loadGameData() {
+    if (fbDb) {
+      try {
+        const snap = await fbDb.ref('gamePlayData').once('value');
+        return snap.val() || {};
+      } catch(e) {}
+    }
+    try { return JSON.parse(localStorage.getItem('gamePlayData') || '{}'); } catch(e) { return {}; }
+  }
+
+  // データ保存：Firebase（要ログイン）+ localStorageキャッシュ
+  async function saveGameData(data) {
+    localStorage.setItem('gamePlayData', JSON.stringify(data));
+    if (fbDb && fbAuth && fbAuth.currentUser) {
+      try {
+        await fbDb.ref('gamePlayData').set(data);
+        console.log('Firebase保存成功');
+      } catch(e) {
+        console.error('Firebase保存エラー:', e.code, e.message);
+        throw e;
+      }
+    } else {
+      console.warn('Firebase未接続 or 未ログイン。fbDb:', !!fbDb, '/ currentUser:', fbAuth ? fbAuth.currentUser : 'no fbAuth');
+    }
+  }
+
+  // ===== 認証UI =====
+  const adminOverlay = document.getElementById('adminOverlay');
+
+  function updateAuthUI(user) {
+    const saveBtn   = document.getElementById('gsmSave');
+    const loginBtn  = document.getElementById('gsmLoginBtn');
+    if (user) {
+      saveBtn.style.display  = '';
+      loginBtn.textContent   = '🔓 ログアウト';
+    } else {
+      saveBtn.style.display  = 'none';
+      loginBtn.textContent   = '🔑 管理者ログイン';
+    }
+  }
+
+  if (fbAuth) {
+    fbAuth.onAuthStateChanged(user => updateAuthUI(user));
+  }
+
+  document.getElementById('gsmLoginBtn').addEventListener('click', () => {
+    if (fbAuth && fbAuth.currentUser) {
+      fbAuth.signOut();
+      return;
+    }
+    document.getElementById('adminErr').textContent = '';
+    document.getElementById('adminEmail').value    = '';
+    document.getElementById('adminPassword').value = '';
+    adminOverlay.classList.add('open');
+  });
+
+  document.getElementById('adminSubmit').addEventListener('click', async () => {
+    const email = document.getElementById('adminEmail').value.trim();
+    const pass  = document.getElementById('adminPassword').value;
+    const errEl = document.getElementById('adminErr');
+    errEl.textContent = '';
+    if (!fbAuth) { errEl.textContent = 'Firebase が設定されていません'; return; }
+    try {
+      await fbAuth.signInWithEmailAndPassword(email, pass);
+      adminOverlay.classList.remove('open');
+    } catch(e) {
+      errEl.textContent = 'メールアドレスまたはパスワードが違います';
+    }
+  });
+
+  document.getElementById('adminCancel').addEventListener('click', () => {
+    adminOverlay.classList.remove('open');
+  });
+  adminOverlay.addEventListener('click', e => {
+    if (e.target === adminOverlay) adminOverlay.classList.remove('open');
+  });
+
+  // モーダル制御
+  const gsmOverlay = document.getElementById('gsmOverlay');
+  const gsmBody    = document.getElementById('gsmBody');
+  let currentSeries = null;
+
+  function renderGsmBody(series, saved) {
+    gsmBody.innerHTML = series.titles.map(t => {
+      const rec = saved[t.id];
+      const played = rec ? rec.played : t.dp;
+      const stars  = rec ? rec.stars  : t.ds;
+      const starsHtml = [1,2,3,4,5].map(n =>
+        `<button class="gsm-star ${stars >= n ? 'on' : ''}" data-val="${n}" aria-label="${n}星">★</button>`
+      ).join('');
+      return `
+        <div class="gsm-row" data-id="${t.id}">
+          <input type="checkbox" class="gsm-check" ${played ? 'checked' : ''}>
+          <div class="gsm-info">
+            <div class="gsm-game-title">${t.title}</div>
+            <div class="gsm-game-year">${t.year}</div>
+          </div>
+          <div class="gsm-stars-wrap" style="${played ? '' : 'visibility:hidden'}">${starsHtml}</div>
+        </div>`;
+    }).join('');
+    gsmBody.querySelectorAll('.gsm-check').forEach(cb => {
+      cb.addEventListener('change', () => {
+        cb.closest('.gsm-row').querySelector('.gsm-stars-wrap').style.visibility = cb.checked ? '' : 'hidden';
+      });
+    });
+    gsmBody.querySelectorAll('.gsm-star').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = parseInt(btn.dataset.val);
+        btn.closest('.gsm-stars-wrap').querySelectorAll('.gsm-star')
+          .forEach(s => s.classList.toggle('on', parseInt(s.dataset.val) <= val));
+      });
+    });
+    updateCount();
+  }
+
+  function openGameModal(seriesKey) {
+    const series = GAME_SERIES[seriesKey];
+    if (!series) return;
+    currentSeries = seriesKey;
+
+    document.getElementById('gsmEmoji').textContent = series.emoji;
+    document.getElementById('gsmTitle').textContent = series.name;
+
+    // まずlocalStorageで即座に開く
+    let localSaved = {};
+    try { localSaved = JSON.parse(localStorage.getItem('gamePlayData') || '{}'); } catch(e) {}
+    renderGsmBody(series, localSaved);
+    gsmOverlay.classList.add('open');
+
+    // Firebaseから最新データを非同期取得して差し替え（4秒タイムアウト）
+    if (fbDb) {
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 4000));
+      Promise.race([fbDb.ref('gamePlayData').once('value'), timeout])
+        .then(snap => {
+          const fbSaved = snap.val() || {};
+          localStorage.setItem('gamePlayData', JSON.stringify(fbSaved));
+          renderGsmBody(series, fbSaved);
+        })
+        .catch(() => {});
+    }
+  }
+
+  function updateCount() {
+    const rows = gsmBody.querySelectorAll('.gsm-row');
+    const played = [...rows].filter(r => r.querySelector('.gsm-check').checked).length;
+    document.getElementById('gsmCount').textContent = `プレイ済み ${played} / ${rows.length} 作品`;
+  }
+  gsmBody.addEventListener('change', updateCount);
+
+  function closeGameModal() { gsmOverlay.classList.remove('open'); }
+  document.getElementById('gsmClose').addEventListener('click', closeGameModal);
+  gsmOverlay.addEventListener('click', e => { if (e.target === gsmOverlay) closeGameModal(); });
+
+  // 保存ボタン
+  document.getElementById('gsmSave').addEventListener('click', async () => {
+    const saved = await loadGameData();
+    gsmBody.querySelectorAll('.gsm-row').forEach(row => {
+      const id = row.dataset.id;
+      const played = row.querySelector('.gsm-check').checked;
+      const stars = [...row.querySelectorAll('.gsm-star')].filter(s => s.classList.contains('on')).length;
+      saved[id] = { played, stars };
+    });
+    try {
+      await saveGameData(saved);
+      const msg = document.getElementById('gsmSavedMsg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 2000);
+    } catch(e) {
+      alert('保存エラー: ' + (e.message || e.code || e));
+    }
+  });
+
+  // ゲームカードクリック
+  document.getElementById('tab-games').addEventListener('click', e => {
+    const card = e.target.closest('.game-card[data-series]');
+    if (card) openGameModal(card.dataset.series);
+  });
+
+  // ===== HOBBY PAGE =====
+  const hobbyPage = document.getElementById('hobbyPage');
+  document.getElementById('hobbyBtn').addEventListener('click', () => {
+    hobbyPage.classList.add('open');
+    hobbyPage.setAttribute('aria-hidden', 'false');
+    hobbyPage.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('hobbyBack').addEventListener('click', () => {
+    hobbyPage.classList.remove('open');
+    hobbyPage.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  });
+  // タブ切り替え
+  document.getElementById('hobbyTabs').addEventListener('click', e => {
+    const btn = e.target.closest('.hobby-tab');
+    if (!btn) return;
+    document.querySelectorAll('.hobby-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.hobby-section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
 
   // ===== NAV SCROLL =====
   const nav = document.getElementById('nav');
@@ -1555,9 +2521,9 @@
     new Chart(doughnutCtx, {
       type: 'doughnut',
       data: {
-        labels: ['React/Next.js', 'TypeScript', 'Node.js', 'UI/Figma', 'AWS/DevOps'],
+        labels: ['VBA / Power Automate', 'Java / Spring MVC', 'Web Frontend', 'Python', 'AWS / Cloud'],
         datasets: [{
-          data: [92, 88, 80, 75, 65],
+          data: [88, 82, 78, 65, 60],
           backgroundColor: [
             'rgba(26,86,219,0.85)',
             'rgba(59,130,246,0.75)',
@@ -1598,10 +2564,10 @@
     new Chart(radarCtx, {
       type: 'radar',
       data: {
-        labels: ['React/Next.js', 'TypeScript', 'Node.js', 'UI/Figma', 'AWS/DevOps', 'GraphQL'],
+        labels: ['VBA / Power Automate', 'Java / Spring', 'Web Frontend', 'Python', 'AWS / Cloud', 'COBOL'],
         datasets: [{
           label: '山中康寛',
-          data: [92, 88, 80, 75, 65, 72],
+          data: [88, 82, 78, 65, 60, 52],
           backgroundColor: 'rgba(26,86,219,0.12)',
           borderColor: 'rgba(26,86,219,0.8)',
           borderWidth: 2,
