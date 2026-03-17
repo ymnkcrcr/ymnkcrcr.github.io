@@ -1030,25 +1030,80 @@
     .hobby-section-header h2 { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; }
     .hobby-section-header p { color: var(--muted); font-size: 0.95rem; }
     /* ゲームグリッド */
-    .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+    /* ===== プラットフォームセクション ===== */
+    .platform-section { margin-bottom: 3rem; }
+    .platform-header {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.7rem 1.2rem; border-radius: 12px;
+      font-size: 0.9rem; font-weight: 900; letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 1.1rem;
+    }
+    .platform-header .ph-icon { font-size: 1.25rem; }
+    .platform-header.nintendo {
+      background: linear-gradient(90deg, #e60012, #c8000e);
+      color: #fff; box-shadow: 0 4px 16px rgba(230,0,18,0.28);
+    }
+    .platform-header.playstation {
+      background: linear-gradient(90deg, #003087, #0070cc);
+      color: #fff; box-shadow: 0 4px 16px rgba(0,48,135,0.28);
+    }
+    .platform-header.pc {
+      background: #0e0e1c; color: #00d4ff;
+      border: 1px solid rgba(0,212,255,0.4);
+      box-shadow: 0 0 18px rgba(0,212,255,0.1);
+    }
+    /* ゲームグリッド共通 */
+    .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
     .game-card {
       background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.3rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 14px; padding: 1.2rem;
+      transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
     }
-    .game-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .game-emoji { font-size: 2.2rem; margin-bottom: 0.6rem; }
-    .game-title { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; line-height: 1.4; }
-    .game-genre { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; }
-    .game-stars { color: #f59e0b; font-size: 0.85rem; }
-    .game-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem; font-style: italic; }
+    .game-card:hover { transform: translateY(-4px); }
+    .game-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .game-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; line-height: 1.4; }
+    .game-genre { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.35rem; }
+    .game-stars { font-size: 0.82rem; margin-bottom: 0.2rem; }
+    .game-note { font-size: 0.73rem; color: var(--muted); margin-top: 0.35rem; font-style: italic; line-height: 1.55; }
     .game-badge {
-      display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem;
-      border-radius: 99px; margin-top: 0.4rem;
+      display: inline-block; font-size: 0.63rem; font-weight: 700; padding: 0.13rem 0.48rem;
+      border-radius: 99px; margin-top: 0.35rem;
     }
-    .badge-clear { background: rgba(5,150,105,0.12); color: #059669; }
-    .badge-playing { background: rgba(26,86,219,0.1); color: #1a56db; }
-    .badge-loved { background: rgba(220,38,38,0.1); color: #dc2626; }
+    .badge-clear   { background: rgba(5,150,105,0.12);  color: #059669; }
+    .badge-playing { background: rgba(26,86,219,0.1);   color: #1a56db; }
+    .badge-loved   { background: rgba(220,38,38,0.1);   color: #dc2626; }
+
+    /* Nintendo テーマ */
+    .platform-section.nintendo .game-card {
+      border-top: 3px solid #e60012; font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif;
+    }
+    .platform-section.nintendo .game-card:hover { box-shadow: 0 8px 28px rgba(230,0,18,0.18); }
+    .platform-section.nintendo .game-title { color: #c8000e; }
+    .platform-section.nintendo .game-stars { color: #e60012; }
+    .platform-section.nintendo .series-link { color: #e60012 !important; }
+
+    /* PlayStation テーマ */
+    .platform-section.playstation .game-card {
+      border-top: 3px solid #0070cc;
+      background: linear-gradient(160deg, var(--bg-card) 70%, rgba(0,112,204,0.06) 100%);
+      font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif;
+    }
+    .platform-section.playstation .game-card:hover { box-shadow: 0 8px 28px rgba(0,112,204,0.2); }
+    .platform-section.playstation .game-title { color: #0070cc; letter-spacing: -0.01em; }
+    .platform-section.playstation .game-stars { color: #0070cc; }
+    .platform-section.playstation .series-link { color: #0070cc !important; }
+
+    /* PC テーマ */
+    .platform-section.pc .game-card {
+      border-top: 3px solid #00d4ff; border-radius: 8px;
+      background: linear-gradient(160deg, var(--bg-card) 70%, rgba(0,212,255,0.05) 100%);
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    }
+    .platform-section.pc .game-card:hover { box-shadow: 0 0 22px rgba(0,212,255,0.22), 0 8px 24px rgba(0,0,0,0.1); }
+    .platform-section.pc .game-title { font-family: inherit; font-size: 0.82rem; color: #00d4ff; }
+    .platform-section.pc .game-genre { color: #a78bfa; }
+    .platform-section.pc .game-stars { color: #00d4ff; }
+    .platform-section.pc .series-link { color: #00d4ff !important; }
     /* お酒グリッド */
     .drink-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
     .drink-card {
@@ -1154,6 +1209,7 @@
     }
     .gsm-row:hover { background: var(--bg-off); }
     .gsm-check { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .gsm-check:disabled { cursor: default; }
     .gsm-info { flex: 1; min-width: 0; }
     .gsm-game-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
     .gsm-game-year { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
@@ -1164,6 +1220,8 @@
     }
     .gsm-star.on { color: #f59e0b; }
     .gsm-star:hover { color: #f59e0b; }
+    .gsm-star:disabled { cursor: default; }
+    .gsm-star:disabled:hover { color: inherit; }
     .gsm-footer {
       padding: 1rem 1.5rem; border-top: 1px solid var(--border);
       display: flex; gap: 0.75rem; align-items: center;
@@ -1238,10 +1296,13 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1.6rem; flex-shrink: 0;
     }
-    .cert-icon.linux  { background: #fef3c7; }
+    .cert-icon.linux  { background: #f0fdf4; }
     .cert-icon.aws    { background: #fff7ed; }
     .cert-icon.cisco  { background: #eff6ff; }
-    .cert-icon.python { background: #f0fdf4; }
+    .cert-icon.ipa    { background: #fdf4ff; }
+    .cert-icon.basic  { background: #eff6ff; }
+    .cert-icon.vba    { background: #f0fdf4; }
+    .cert-icon.mos    { background: #eff6ff; }
     .cert-name { font-size: 0.95rem; font-weight: 800; color: var(--text); }
     .cert-issuer { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
     .cert-status {
@@ -1731,34 +1792,58 @@
     </div>
     <div class="certs-grid">
       <div class="cert-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-icon ipa">📋</div>
+        <div>
+          <div class="cert-name">ITパスポート</div>
+          <div class="cert-issuer">独立行政法人 情報処理推進機構</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="cert-icon basic">💻</div>
+        <div>
+          <div class="cert-name">基本情報技術者試験</div>
+          <div class="cert-issuer">独立行政法人 情報処理推進機構</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="120">
         <div class="cert-icon linux">🐧</div>
         <div>
-          <div class="cert-name">LPIC Level 1</div>
+          <div class="cert-name">LPIC Level 1 / 2 / 3</div>
           <div class="cert-issuer">Linux Professional Institute</div>
           <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
-      <div class="cert-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="180">
         <div class="cert-icon aws">☁️</div>
         <div>
-          <div class="cert-name">AWS Certified Solutions Architect</div>
+          <div class="cert-name">AWS CLF / SAA / SAP</div>
           <div class="cert-issuer">Amazon Web Services</div>
-          <span class="cert-status progress">📖 学習中</span>
+          <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
-      <div class="cert-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="240">
         <div class="cert-icon cisco">🌐</div>
         <div>
           <div class="cert-name">CCNA</div>
           <div class="cert-issuer">Cisco Systems</div>
-          <span class="cert-status progress">📖 学習中</span>
+          <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
-      <div class="cert-card" data-aos="fade-up" data-aos-delay="240">
-        <div class="cert-icon python">🐍</div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="cert-icon vba">📊</div>
         <div>
-          <div class="cert-name">Python 3 エンジニア認定基礎試験</div>
-          <div class="cert-issuer">一般社団法人 Pythonエンジニア育成推進協会</div>
+          <div class="cert-name">VBAエキスパート Basic / Standard</div>
+          <div class="cert-issuer">株式会社オデッセイ コミュニケーションズ</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="360">
+        <div class="cert-icon mos">📝</div>
+        <div>
+          <div class="cert-name">MOS SharePoint</div>
+          <div class="cert-issuer">Microsoft</div>
           <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
@@ -1886,81 +1971,107 @@
         <h2>🎮 歴代プレイゲーム実績</h2>
         <p>小学生から続くゲーム歴。RPG・アクション・対戦ゲーム問わず何でもやります。</p>
       </div>
-      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">💡 タイトルカードをクリックするとシリーズ一覧・プレイ記録の編集ができます</p>
-      <div class="game-grid">
-        <div class="game-card" data-series="pokemon" style="cursor:pointer">
-          <div class="game-emoji">🔴</div>
-          <div class="game-title">ポケットモンスター シリーズ</div>
-          <div class="game-genre">RPG</div>
-          <div class="game-stars">★★★★★</div>
-          <span class="game-badge badge-loved">永遠の相棒</span>
-          <p class="game-note">初代〜最新作まで全作プレイ。幼少期から現在まで続く原点。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1.5rem;">💡 カードをクリックするとシリーズ一覧・プレイ記録の編集ができます</p>
+
+      <!-- Nintendo -->
+      <div class="platform-section nintendo">
+        <div class="platform-header nintendo">
+          <span class="ph-icon">🔴</span> Nintendo
         </div>
-        <div class="game-card" data-series="mhunter" style="cursor:pointer">
-          <div class="game-emoji">🐉</div>
-          <div class="game-title">モンスターハンター シリーズ</div>
-          <div class="game-genre">アクション・ハンティング</div>
-          <div class="game-stars">★★★★★</div>
-          <span class="game-badge badge-clear">HR999 到達</span>
-          <p class="game-note">睡眠時間を削った伝説の一本。ほぼすべての装備を作成。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
-        </div>
-        <div class="game-card" data-series="zelda" style="cursor:pointer">
-          <div class="game-emoji">🌿</div>
-          <div class="game-title">ゼルダの伝説 シリーズ</div>
-          <div class="game-genre">アドベンチャー</div>
-          <div class="game-stars">★★★★★</div>
-          <span class="game-badge badge-clear">全祠クリア</span>
-          <p class="game-note">オープンワールドの革命。毎日ちょっとずつ遊ぶのが至福。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
-        </div>
-        <div class="game-card" data-series="apex" style="cursor:pointer">
-          <div class="game-emoji">🔥</div>
-          <div class="game-title">Apex Legends</div>
-          <div class="game-genre">FPS・バトルロイヤル</div>
-          <div class="game-stars">★★★★☆</div>
-          <span class="game-badge badge-clear">ダイヤ到達</span>
-          <p class="game-note">仲間と深夜に叫びながらやるのが一番楽しい。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
-        </div>
-        <div class="game-card" data-series="soulsborne" style="cursor:pointer">
-          <div class="game-emoji">⚔️</div>
-          <div class="game-title">ELDEN RING / ソウルシリーズ</div>
-          <div class="game-genre">アクションRPG</div>
-          <div class="game-stars">★★★★★</div>
-          <span class="game-badge badge-clear">全ボス撃破</span>
-          <p class="game-note">死にゲーの最高傑作。折れない心を鍛えられた。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
-        </div>
-        <div class="game-card" data-series="fifa" style="cursor:pointer">
-          <div class="game-emoji">⚽</div>
-          <div class="game-title">FIFA / EA Sports FC シリーズ</div>
-          <div class="game-genre">スポーツ</div>
-          <div class="game-stars">★★★★☆</div>
-          <span class="game-badge badge-playing">毎年更新中</span>
-          <p class="game-note">Ultimate Team に課金を続けて数年。いつ抜け出せるのか。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
-        </div>
-        <div class="game-card" data-series="doubutsu" style="cursor:pointer">
-          <div class="game-emoji">🏝️</div>
-          <div class="game-title">どうぶつの森 シリーズ</div>
-          <div class="game-genre">シミュレーション</div>
-          <div class="game-stars">★★★★☆</div>
-          <span class="game-badge badge-clear">島★5 達成</span>
-          <p class="game-note">コロナ禍の精神的支柱。島がなければ乗り越えられなかった。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
-        </div>
-        <div class="game-card" data-series="splatoon" style="cursor:pointer">
-          <div class="game-emoji">🎯</div>
-          <div class="game-title">スプラトゥーン シリーズ</div>
-          <div class="game-genre">TPS・シューター</div>
-          <div class="game-stars">★★★★☆</div>
-          <span class="game-badge badge-playing">ウデマエ X</span>
-          <p class="game-note">任天堂の天才。こんなに楽しい対戦ゲームはない。</p>
-          <p class="game-note" style="color:var(--accent);margin-top:0.5rem;font-style:normal;font-size:0.72rem;font-weight:600;">▶ シリーズ一覧を見る</p>
+        <div class="game-grid">
+          <div class="game-card" data-series="pokemon">
+            <div class="game-emoji">🔴</div>
+            <div class="game-title">ポケットモンスター シリーズ</div>
+            <div class="game-genre">RPG</div>
+            <div class="game-stars">★★★★★</div>
+            <span class="game-badge badge-loved">永遠の相棒</span>
+            <p class="game-note">初代〜最新作まで全作プレイ。幼少期から現在まで続く原点。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
+          <div class="game-card" data-series="mhunter">
+            <div class="game-emoji">🐉</div>
+            <div class="game-title">モンスターハンター シリーズ</div>
+            <div class="game-genre">アクション・ハンティング</div>
+            <div class="game-stars">★★★★★</div>
+            <span class="game-badge badge-clear">HR999 到達</span>
+            <p class="game-note">睡眠時間を削った伝説の一本。ほぼすべての装備を作成。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
+          <div class="game-card" data-series="zelda">
+            <div class="game-emoji">🌿</div>
+            <div class="game-title">ゼルダの伝説 シリーズ</div>
+            <div class="game-genre">アドベンチャー</div>
+            <div class="game-stars">★★★★★</div>
+            <span class="game-badge badge-clear">全祠クリア</span>
+            <p class="game-note">オープンワールドの革命。毎日ちょっとずつ遊ぶのが至福。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
+          <div class="game-card" data-series="doubutsu">
+            <div class="game-emoji">🏝️</div>
+            <div class="game-title">どうぶつの森 シリーズ</div>
+            <div class="game-genre">シミュレーション</div>
+            <div class="game-stars">★★★★☆</div>
+            <span class="game-badge badge-clear">島★5 達成</span>
+            <p class="game-note">コロナ禍の精神的支柱。島がなければ乗り越えられなかった。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
+          <div class="game-card" data-series="splatoon">
+            <div class="game-emoji">🎯</div>
+            <div class="game-title">スプラトゥーン シリーズ</div>
+            <div class="game-genre">TPS・シューター</div>
+            <div class="game-stars">★★★★☆</div>
+            <span class="game-badge badge-playing">ウデマエ X</span>
+            <p class="game-note">任天堂の天才。こんなに楽しい対戦ゲームはない。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
         </div>
       </div>
+
+      <!-- PlayStation -->
+      <div class="platform-section playstation">
+        <div class="platform-header playstation">
+          <span class="ph-icon">🎮</span> PlayStation
+        </div>
+        <div class="game-grid">
+          <div class="game-card" data-series="soulsborne">
+            <div class="game-emoji">⚔️</div>
+            <div class="game-title">ELDEN RING / ソウルシリーズ</div>
+            <div class="game-genre">アクション RPG</div>
+            <div class="game-stars">★★★★★</div>
+            <span class="game-badge badge-clear">全ボス撃破</span>
+            <p class="game-note">死にゲーの最高傑作。折れない心を鍛えられた。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
+          <div class="game-card" data-series="fifa">
+            <div class="game-emoji">⚽</div>
+            <div class="game-title">FIFA / EA Sports FC シリーズ</div>
+            <div class="game-genre">スポーツ</div>
+            <div class="game-stars">★★★★☆</div>
+            <span class="game-badge badge-playing">毎年更新中</span>
+            <p class="game-note">Ultimate Team に課金を続けて数年。いつ抜け出せるのか。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PC -->
+      <div class="platform-section pc">
+        <div class="platform-header pc">
+          <span class="ph-icon">🖥️</span> PC
+        </div>
+        <div class="game-grid">
+          <div class="game-card" data-series="apex">
+            <div class="game-emoji">🔥</div>
+            <div class="game-title">Apex Legends</div>
+            <div class="game-genre">FPS · Battle Royale</div>
+            <div class="game-stars">★★★★☆</div>
+            <span class="game-badge badge-clear">ダイヤ到達</span>
+            <p class="game-note">仲間と深夜に叫びながらやるのが一番楽しい。</p>
+            <p class="game-note series-link" style="font-style:normal;font-size:0.72rem;font-weight:700;margin-top:0.5rem;">▶ シリーズ一覧を見る</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- お酒実績 -->
@@ -2201,40 +2312,43 @@
 
   </div>
 
-  <!-- ゲームシリーズモーダル -->
-  <div class="gsm-overlay" id="gsmOverlay">
-    <div class="gsm-panel">
-      <div class="gsm-handle"></div>
-      <div class="gsm-header">
-        <div class="gsm-header-left">
-          <span class="gsm-emoji" id="gsmEmoji"></span>
-          <div>
-            <div class="gsm-title" id="gsmTitle"></div>
-            <div class="gsm-count" id="gsmCount"></div>
-          </div>
-        </div>
-        <button class="gsm-close" id="gsmClose">✕</button>
-      </div>
-      <div class="gsm-body" id="gsmBody"></div>
-      <div class="gsm-footer">
-        <button class="gsm-save" id="gsmSave" style="display:none">💾 プレイ記録を保存</button>
-        <span class="gsm-saved-msg" id="gsmSavedMsg">✓ 保存しました！</span>
-        <button class="gsm-login-btn" id="gsmLoginBtn">🔑 管理者ログイン</button>
-      </div>
-    </div>
   </div>
 
-  <!-- 管理者ログインパネル -->
-  <div class="admin-overlay" id="adminOverlay">
-    <div class="admin-panel">
-      <h3 id="adminPanelTitle">🔑 管理者ログイン</h3>
-      <p id="adminPanelDesc">メールアドレスとパスワードを入力してください</p>
-      <input class="admin-input" type="email"    id="adminEmail"    placeholder="メールアドレス">
-      <input class="admin-input" type="password" id="adminPassword" placeholder="パスワード">
-      <div class="admin-err" id="adminErr"></div>
-      <button class="admin-submit" id="adminSubmit">ログイン</button>
-      <button class="admin-cancel" id="adminCancel">キャンセル</button>
+</div>
+
+<!-- ゲームシリーズモーダル（hobby-page外に配置してスクロール影響を排除） -->
+<div class="gsm-overlay" id="gsmOverlay">
+  <div class="gsm-panel">
+    <div class="gsm-handle"></div>
+    <div class="gsm-header">
+      <div class="gsm-header-left">
+        <span class="gsm-emoji" id="gsmEmoji"></span>
+        <div>
+          <div class="gsm-title" id="gsmTitle"></div>
+          <div class="gsm-count" id="gsmCount"></div>
+        </div>
+      </div>
+      <button class="gsm-close" id="gsmClose">✕</button>
     </div>
+    <div class="gsm-body" id="gsmBody"></div>
+    <div class="gsm-footer">
+      <button class="gsm-save" id="gsmSave" style="display:none">💾 プレイ記録を保存</button>
+      <span class="gsm-saved-msg" id="gsmSavedMsg">✓ 保存しました！</span>
+      <button class="gsm-login-btn" id="gsmLoginBtn">🔑 管理者ログイン</button>
+    </div>
+  </div>
+</div>
+
+<!-- 管理者ログインパネル -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <h3 id="adminPanelTitle">🔑 管理者ログイン</h3>
+    <p id="adminPanelDesc">メールアドレスとパスワードを入力してください</p>
+    <input class="admin-input" type="email"    id="adminEmail"    placeholder="メールアドレス">
+    <input class="admin-input" type="password" id="adminPassword" placeholder="パスワード">
+    <div class="admin-err" id="adminErr"></div>
+    <button class="admin-submit" id="adminSubmit">ログイン</button>
+    <button class="admin-cancel" id="adminCancel">キャンセル</button>
   </div>
 </div>
 
