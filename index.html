@@ -1219,6 +1219,39 @@
     }
     .admin-cancel:hover { background: var(--bg-off); }
 
+    /* ===== CERTIFICATIONS ===== */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    .cert-card {
+      display: flex; align-items: center; gap: 1.1rem;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.25rem 1.4rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cert-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .cert-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .cert-icon.linux  { background: #fef3c7; }
+    .cert-icon.aws    { background: #fff7ed; }
+    .cert-icon.cisco  { background: #eff6ff; }
+    .cert-icon.python { background: #f0fdf4; }
+    .cert-name { font-size: 0.95rem; font-weight: 800; color: var(--text); }
+    .cert-issuer { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+    .cert-status {
+      display: inline-block; margin-top: 0.4rem;
+      font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.55rem;
+      border-radius: 99px;
+    }
+    .cert-status.acquired { background: #d1fae5; color: #065f46; }
+    .cert-status.progress { background: #fef3c7; color: #92400e; }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; }
@@ -1240,6 +1273,30 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
       section { padding: 4.5rem 0; }
+    }
+    /* iPhone SE など小さい端末向け */
+    @media (max-width: 480px) {
+      .ctrl-body {
+        width: 172px; height: 74px;
+        border-radius: 37px 37px 20px 20px;
+        padding: 0 12px;
+      }
+      .ctrl-actions {
+        grid-template-columns: 15px 15px 15px;
+        grid-template-rows: 15px 15px 15px;
+        gap: 2px;
+      }
+      .act-btn { width: 15px; height: 15px; font-size: 0.38rem; }
+      .ctrl-dpad {
+        grid-template-columns: 13px 13px 13px;
+        grid-template-rows: 13px 13px 13px;
+      }
+      .ctrl-grip { width: 46px; height: 50px; }
+      .ctrl-grips { padding: 0 12px; }
+      .ctrl-grips::before { left: calc(12px + 46px); right: calc(12px + 46px); }
+      .ctrl-grip:first-child { border-radius: 14px 3px 28px 36px; }
+      .ctrl-grip:last-child  { border-radius: 3px 14px 36px 28px; }
+      .ctrl-shell { padding-bottom: 38px; }
     }
   </style>
 </head>
@@ -1320,6 +1377,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#works">Works</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#certs">Certs</a></li>
       <li><a href="#profile">Profile</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -1334,6 +1392,7 @@
   <a href="#about" class="mobile-link">About</a>
   <a href="#works" class="mobile-link">Works</a>
   <a href="#skills" class="mobile-link">Skills</a>
+  <a href="#certs" class="mobile-link">Certs</a>
   <a href="#profile" class="mobile-link">Profile</a>
   <a href="#contact" class="mobile-link">Contact</a>
 </div>
@@ -1658,6 +1717,51 @@
         <p class="tl-desc">官公庁案件で培った高い品質意識と、業務自動化・クラウド運用の実績を武器に独立。レガシーシステムのモダナイズ支援・業務効率化・クラウド移行など、幅広いニーズに対応中。</p>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ===== CERTIFICATIONS ===== -->
+<section id="certs" class="section-pad">
+  <div class="container">
+    <div data-aos="fade-up">
+      <span class="section-eyebrow">Certifications</span>
+      <h2 class="section-title">資格<span>・認定</span></h2>
+      <p class="section-lead">業務で活用する技術の裏付けとなる資格を取得・学習中です。</p>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-icon linux">🐧</div>
+        <div>
+          <div class="cert-name">LPIC Level 1</div>
+          <div class="cert-issuer">Linux Professional Institute</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="80">
+        <div class="cert-icon aws">☁️</div>
+        <div>
+          <div class="cert-name">AWS Certified Solutions Architect</div>
+          <div class="cert-issuer">Amazon Web Services</div>
+          <span class="cert-status progress">📖 学習中</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="160">
+        <div class="cert-icon cisco">🌐</div>
+        <div>
+          <div class="cert-name">CCNA</div>
+          <div class="cert-issuer">Cisco Systems</div>
+          <span class="cert-status progress">📖 学習中</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="240">
+        <div class="cert-icon python">🐍</div>
+        <div>
+          <div class="cert-name">Python 3 エンジニア認定基礎試験</div>
+          <div class="cert-issuer">一般社団法人 Pythonエンジニア育成推進協会</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -2294,6 +2398,13 @@
       saveBtn.style.display  = 'none';
       loginBtn.textContent   = '🔑 管理者ログイン';
     }
+    // モーダルが開いていれば編集可否を再描画
+    if (currentSeries && gsmOverlay.classList.contains('open')) {
+      const series = GAME_SERIES[currentSeries];
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem('gamePlayData') || '{}'); } catch(e) {}
+      renderGsmBody(series, saved);
+    }
   }
 
   if (fbAuth) {
@@ -2337,17 +2448,22 @@
   const gsmBody    = document.getElementById('gsmBody');
   let currentSeries = null;
 
+  function isAdmin() {
+    return !!(fbAuth && fbAuth.currentUser);
+  }
+
   function renderGsmBody(series, saved) {
+    const readonly = !isAdmin();
     gsmBody.innerHTML = series.titles.map(t => {
       const rec = saved[t.id];
       const played = rec ? rec.played : t.dp;
       const stars  = rec ? rec.stars  : t.ds;
       const starsHtml = [1,2,3,4,5].map(n =>
-        `<button class="gsm-star ${stars >= n ? 'on' : ''}" data-val="${n}" aria-label="${n}星">★</button>`
+        `<button class="gsm-star ${stars >= n ? 'on' : ''}" data-val="${n}" aria-label="${n}星" ${readonly ? 'disabled' : ''}>★</button>`
       ).join('');
       return `
         <div class="gsm-row" data-id="${t.id}">
-          <input type="checkbox" class="gsm-check" ${played ? 'checked' : ''}>
+          <input type="checkbox" class="gsm-check" ${played ? 'checked' : ''} ${readonly ? 'disabled' : ''}>
           <div class="gsm-info">
             <div class="gsm-game-title">${t.title}</div>
             <div class="gsm-game-year">${t.year}</div>
@@ -2355,18 +2471,20 @@
           <div class="gsm-stars-wrap" style="${played ? '' : 'visibility:hidden'}">${starsHtml}</div>
         </div>`;
     }).join('');
-    gsmBody.querySelectorAll('.gsm-check').forEach(cb => {
-      cb.addEventListener('change', () => {
-        cb.closest('.gsm-row').querySelector('.gsm-stars-wrap').style.visibility = cb.checked ? '' : 'hidden';
+    if (!readonly) {
+      gsmBody.querySelectorAll('.gsm-check').forEach(cb => {
+        cb.addEventListener('change', () => {
+          cb.closest('.gsm-row').querySelector('.gsm-stars-wrap').style.visibility = cb.checked ? '' : 'hidden';
+        });
       });
-    });
-    gsmBody.querySelectorAll('.gsm-star').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const val = parseInt(btn.dataset.val);
-        btn.closest('.gsm-stars-wrap').querySelectorAll('.gsm-star')
-          .forEach(s => s.classList.toggle('on', parseInt(s.dataset.val) <= val));
+      gsmBody.querySelectorAll('.gsm-star').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = parseInt(btn.dataset.val);
+          btn.closest('.gsm-stars-wrap').querySelectorAll('.gsm-star')
+            .forEach(s => s.classList.toggle('on', parseInt(s.dataset.val) <= val));
+        });
       });
-    });
+    }
     updateCount();
   }
 
