@@ -1154,6 +1154,7 @@
     }
     .gsm-row:hover { background: var(--bg-off); }
     .gsm-check { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .gsm-check:disabled { cursor: default; }
     .gsm-info { flex: 1; min-width: 0; }
     .gsm-game-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
     .gsm-game-year { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
@@ -1164,6 +1165,8 @@
     }
     .gsm-star.on { color: #f59e0b; }
     .gsm-star:hover { color: #f59e0b; }
+    .gsm-star:disabled { cursor: default; }
+    .gsm-star:disabled:hover { color: inherit; }
     .gsm-footer {
       padding: 1rem 1.5rem; border-top: 1px solid var(--border);
       display: flex; gap: 0.75rem; align-items: center;
@@ -1238,10 +1241,13 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1.6rem; flex-shrink: 0;
     }
-    .cert-icon.linux  { background: #fef3c7; }
+    .cert-icon.linux  { background: #f0fdf4; }
     .cert-icon.aws    { background: #fff7ed; }
     .cert-icon.cisco  { background: #eff6ff; }
-    .cert-icon.python { background: #f0fdf4; }
+    .cert-icon.ipa    { background: #fdf4ff; }
+    .cert-icon.basic  { background: #eff6ff; }
+    .cert-icon.vba    { background: #f0fdf4; }
+    .cert-icon.mos    { background: #eff6ff; }
     .cert-name { font-size: 0.95rem; font-weight: 800; color: var(--text); }
     .cert-issuer { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
     .cert-status {
@@ -1731,34 +1737,58 @@
     </div>
     <div class="certs-grid">
       <div class="cert-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-icon ipa">📋</div>
+        <div>
+          <div class="cert-name">ITパスポート</div>
+          <div class="cert-issuer">独立行政法人 情報処理推進機構</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="cert-icon basic">💻</div>
+        <div>
+          <div class="cert-name">基本情報技術者試験</div>
+          <div class="cert-issuer">独立行政法人 情報処理推進機構</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="120">
         <div class="cert-icon linux">🐧</div>
         <div>
-          <div class="cert-name">LPIC Level 1</div>
+          <div class="cert-name">LPIC Level 1 / 2 / 3</div>
           <div class="cert-issuer">Linux Professional Institute</div>
           <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
-      <div class="cert-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="180">
         <div class="cert-icon aws">☁️</div>
         <div>
-          <div class="cert-name">AWS Certified Solutions Architect</div>
+          <div class="cert-name">AWS CLF / SAA / SAP</div>
           <div class="cert-issuer">Amazon Web Services</div>
-          <span class="cert-status progress">📖 学習中</span>
+          <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
-      <div class="cert-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="240">
         <div class="cert-icon cisco">🌐</div>
         <div>
           <div class="cert-name">CCNA</div>
           <div class="cert-issuer">Cisco Systems</div>
-          <span class="cert-status progress">📖 学習中</span>
+          <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
-      <div class="cert-card" data-aos="fade-up" data-aos-delay="240">
-        <div class="cert-icon python">🐍</div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="cert-icon vba">📊</div>
         <div>
-          <div class="cert-name">Python 3 エンジニア認定基礎試験</div>
-          <div class="cert-issuer">一般社団法人 Pythonエンジニア育成推進協会</div>
+          <div class="cert-name">VBAエキスパート Basic / Standard</div>
+          <div class="cert-issuer">株式会社オデッセイ コミュニケーションズ</div>
+          <span class="cert-status acquired">✓ 取得済み</span>
+        </div>
+      </div>
+      <div class="cert-card" data-aos="fade-up" data-aos-delay="360">
+        <div class="cert-icon mos">📝</div>
+        <div>
+          <div class="cert-name">MOS SharePoint</div>
+          <div class="cert-issuer">Microsoft</div>
           <span class="cert-status acquired">✓ 取得済み</span>
         </div>
       </div>
@@ -2201,40 +2231,43 @@
 
   </div>
 
-  <!-- ゲームシリーズモーダル -->
-  <div class="gsm-overlay" id="gsmOverlay">
-    <div class="gsm-panel">
-      <div class="gsm-handle"></div>
-      <div class="gsm-header">
-        <div class="gsm-header-left">
-          <span class="gsm-emoji" id="gsmEmoji"></span>
-          <div>
-            <div class="gsm-title" id="gsmTitle"></div>
-            <div class="gsm-count" id="gsmCount"></div>
-          </div>
-        </div>
-        <button class="gsm-close" id="gsmClose">✕</button>
-      </div>
-      <div class="gsm-body" id="gsmBody"></div>
-      <div class="gsm-footer">
-        <button class="gsm-save" id="gsmSave" style="display:none">💾 プレイ記録を保存</button>
-        <span class="gsm-saved-msg" id="gsmSavedMsg">✓ 保存しました！</span>
-        <button class="gsm-login-btn" id="gsmLoginBtn">🔑 管理者ログイン</button>
-      </div>
-    </div>
   </div>
 
-  <!-- 管理者ログインパネル -->
-  <div class="admin-overlay" id="adminOverlay">
-    <div class="admin-panel">
-      <h3 id="adminPanelTitle">🔑 管理者ログイン</h3>
-      <p id="adminPanelDesc">メールアドレスとパスワードを入力してください</p>
-      <input class="admin-input" type="email"    id="adminEmail"    placeholder="メールアドレス">
-      <input class="admin-input" type="password" id="adminPassword" placeholder="パスワード">
-      <div class="admin-err" id="adminErr"></div>
-      <button class="admin-submit" id="adminSubmit">ログイン</button>
-      <button class="admin-cancel" id="adminCancel">キャンセル</button>
+</div>
+
+<!-- ゲームシリーズモーダル（hobby-page外に配置してスクロール影響を排除） -->
+<div class="gsm-overlay" id="gsmOverlay">
+  <div class="gsm-panel">
+    <div class="gsm-handle"></div>
+    <div class="gsm-header">
+      <div class="gsm-header-left">
+        <span class="gsm-emoji" id="gsmEmoji"></span>
+        <div>
+          <div class="gsm-title" id="gsmTitle"></div>
+          <div class="gsm-count" id="gsmCount"></div>
+        </div>
+      </div>
+      <button class="gsm-close" id="gsmClose">✕</button>
     </div>
+    <div class="gsm-body" id="gsmBody"></div>
+    <div class="gsm-footer">
+      <button class="gsm-save" id="gsmSave" style="display:none">💾 プレイ記録を保存</button>
+      <span class="gsm-saved-msg" id="gsmSavedMsg">✓ 保存しました！</span>
+      <button class="gsm-login-btn" id="gsmLoginBtn">🔑 管理者ログイン</button>
+    </div>
+  </div>
+</div>
+
+<!-- 管理者ログインパネル -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <h3 id="adminPanelTitle">🔑 管理者ログイン</h3>
+    <p id="adminPanelDesc">メールアドレスとパスワードを入力してください</p>
+    <input class="admin-input" type="email"    id="adminEmail"    placeholder="メールアドレス">
+    <input class="admin-input" type="password" id="adminPassword" placeholder="パスワード">
+    <div class="admin-err" id="adminErr"></div>
+    <button class="admin-submit" id="adminSubmit">ログイン</button>
+    <button class="admin-cancel" id="adminCancel">キャンセル</button>
   </div>
 </div>
 
