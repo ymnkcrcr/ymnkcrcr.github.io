@@ -1170,17 +1170,35 @@
     /* ===== GAME SERIES MODAL ===== */
     .gsm-overlay {
       position: fixed; inset: 0; z-index: 600;
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
       display: flex; align-items: flex-end; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+      opacity: 0; pointer-events: none; transition: opacity 0.35s, background 0.4s;
     }
     .gsm-overlay.open { opacity: 1; pointer-events: all; }
+    /* プラットフォーム別背景色 */
+    .gsm-overlay.theme-nintendo    { background: rgba(40,0,5,0.72); }
+    .gsm-overlay.theme-playstation { background: rgba(0,10,40,0.72); }
+    .gsm-overlay.theme-pc          { background: rgba(0,14,22,0.78); }
+    /* デコレーション領域 */
+    .gsm-deco {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    .gsm-deco-item {
+      position: absolute; user-select: none; line-height: 1;
+      animation: gsmFloat 3.6s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    }
+    @keyframes gsmFloat {
+      0%,100% { transform: translateY(0) rotate(-3deg) scale(1); }
+      50%      { transform: translateY(-14px) rotate(4deg) scale(1.06); }
+    }
     .gsm-panel {
+      position: relative; z-index: 2;
       background: var(--bg); width: 100%; max-width: 640px;
       max-height: 85vh; border-radius: 24px 24px 0 0;
       display: flex; flex-direction: column;
       transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.25);
     }
     .gsm-overlay.open .gsm-panel { transform: translateY(0); }
     .gsm-handle {
@@ -2318,6 +2336,7 @@
 
 <!-- ゲームシリーズモーダル（hobby-page外に配置してスクロール影響を排除） -->
 <div class="gsm-overlay" id="gsmOverlay">
+  <div class="gsm-deco" id="gsmDeco"></div>
   <div class="gsm-panel">
     <div class="gsm-handle"></div>
     <div class="gsm-header">
@@ -2566,6 +2585,44 @@
     return !!(fbAuth && fbAuth.currentUser);
   }
 
+  // シリーズ別デコレーション定義
+  const SERIES_DECO = {
+    pokemon:    { theme:'nintendo',    items:['🔴','⚡','🌊','🔥','🌿','💎','🌙','❄️'] },
+    mhunter:    { theme:'nintendo',    items:['🐉','⚔️','🛡️','🔥','💎','🦴','🌋','🗡️'] },
+    zelda:      { theme:'nintendo',    items:['🌿','⚔️','🔮','🏹','✨','🗝️','🌙','🛡️'] },
+    doubutsu:   { theme:'nintendo',    items:['🏝️','🌸','🍎','🦋','🌿','🐟','⭐','🍄'] },
+    splatoon:   { theme:'nintendo',    items:['🎯','🦑','🖌️','💦','🌊','🎨','⭐','💥'] },
+    soulsborne: { theme:'playstation', items:['⚔️','💀','🔥','🌑','👁️','🕯️','🏰','☠️'] },
+    fifa:       { theme:'playstation', items:['⚽','🏟️','🥅','🏆','👟','🎽','🥇','🎯'] },
+    apex:       { theme:'pc',          items:['🔥','💥','🎯','⚡','🏆','🔫','🛸','💠'] },
+  };
+
+  // デコレーション配置（オーバーレイのパネル上部エリア）
+  const DECO_POSITIONS = [
+    { top:'6%',  left:'4%'  }, { top:'10%', right:'5%'  },
+    { top:'22%', left:'12%' }, { top:'18%', right:'14%' },
+    { top:'38%', left:'3%'  }, { top:'34%', right:'4%'  },
+    { top:'52%', left:'18%' }, { top:'48%', right:'16%' },
+  ];
+
+  function setModalDeco(seriesKey) {
+    const deco = SERIES_DECO[seriesKey];
+    const overlay = document.getElementById('gsmOverlay');
+    const decoEl  = document.getElementById('gsmDeco');
+    // テーマクラスをリセット
+    overlay.classList.remove('theme-nintendo','theme-playstation','theme-pc');
+    if (!deco) { decoEl.innerHTML = ''; return; }
+    overlay.classList.add('theme-' + deco.theme);
+    decoEl.innerHTML = deco.items.map((emoji, i) => {
+      const pos   = DECO_POSITIONS[i % DECO_POSITIONS.length];
+      const css   = Object.entries(pos).map(([k,v]) => `${k}:${v}`).join(';');
+      const delay = (i * 0.45).toFixed(2);
+      const size  = (3.2 + (i % 3) * 0.9).toFixed(1);
+      const op    = (0.13 + (i % 4) * 0.04).toFixed(2);
+      return `<div class="gsm-deco-item" style="${css};font-size:${size}rem;opacity:${op};animation-delay:${delay}s">${emoji}</div>`;
+    }).join('');
+  }
+
   function renderGsmBody(series, saved) {
     const readonly = !isAdmin();
     gsmBody.innerHTML = series.titles.map(t => {
@@ -2610,6 +2667,9 @@
     document.getElementById('gsmEmoji').textContent = series.emoji;
     document.getElementById('gsmTitle').textContent = series.name;
 
+    // デコレーション設定
+    setModalDeco(seriesKey);
+
     // まずlocalStorageで即座に開く
     let localSaved = {};
     try { localSaved = JSON.parse(localStorage.getItem('gamePlayData') || '{}'); } catch(e) {}
@@ -2636,7 +2696,10 @@
   }
   gsmBody.addEventListener('change', updateCount);
 
-  function closeGameModal() { gsmOverlay.classList.remove('open'); }
+  function closeGameModal() {
+    gsmOverlay.classList.remove('open','theme-nintendo','theme-playstation','theme-pc');
+    document.getElementById('gsmDeco').innerHTML = '';
+  }
   document.getElementById('gsmClose').addEventListener('click', closeGameModal);
   gsmOverlay.addEventListener('click', e => { if (e.target === gsmOverlay) closeGameModal(); });
 
