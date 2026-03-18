@@ -640,6 +640,7 @@
       border-radius: 50px 50px 26px 26px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 18px; position: relative; z-index: 2;
+      overflow: hidden;
       border: 1px solid rgba(255,255,255,0.055);
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.1),
@@ -723,7 +724,7 @@
       grid-template-areas: ". up ." "left mid right" ". down .";
       grid-template-columns: 15px 15px 15px;
       grid-template-rows: 15px 15px 15px;
-      gap: 1.5px;
+      gap: 1.5px; flex-shrink: 0;
     }
     .dpad-btn {
       display: flex; align-items: center; justify-content: center;
@@ -742,6 +743,7 @@
     /* ---- センターエリア ---- */
     .ctrl-center-area {
       display: flex; flex-direction: column; align-items: center; gap: 10px;
+      flex: 1; min-width: 0; overflow: hidden;
     }
     .ctrl-center-top {
       display: flex; align-items: center; gap: 8px;
@@ -786,7 +788,7 @@
       grid-template-areas: ". x ." "y . a" ". b .";
       grid-template-columns: 18px 18px 18px;
       grid-template-rows: 18px 18px 18px;
-      gap: 2px;
+      gap: 2px; flex-shrink: 0;
     }
     .act-btn {
       display: flex; align-items: center; justify-content: center;
@@ -1227,7 +1229,8 @@
     }
     .gsm-row:hover { background: var(--bg-off); }
     .gsm-check { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
-    .gsm-check:disabled { cursor: default; }
+    .gsm-body.readonly .gsm-check { cursor: default !important; pointer-events: none; }
+    .gsm-body:not(.readonly) .gsm-check { cursor: pointer; }
     .gsm-info { flex: 1; min-width: 0; }
     .gsm-game-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
     .gsm-game-year { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
@@ -1237,9 +1240,8 @@
       color: #d1d5db; transition: color 0.1s; padding: 0; line-height: 1;
     }
     .gsm-star.on { color: #f59e0b; }
-    .gsm-star:hover { color: #f59e0b; }
-    .gsm-star:disabled { cursor: default; }
-    .gsm-star:disabled:hover { color: inherit; }
+    .gsm-body:not(.readonly) .gsm-star:hover { color: #f59e0b; }
+    .gsm-body.readonly .gsm-star { cursor: default !important; pointer-events: none; }
     .gsm-footer {
       padding: 1rem 1.5rem; border-top: 1px solid var(--border);
       display: flex; gap: 0.75rem; align-items: center;
@@ -2625,6 +2627,7 @@
 
   function renderGsmBody(series, saved) {
     const readonly = !isAdmin();
+    gsmBody.classList.toggle('readonly', readonly);
     gsmBody.innerHTML = series.titles.map(t => {
       const rec = saved[t.id];
       const played = rec ? rec.played : t.dp;
