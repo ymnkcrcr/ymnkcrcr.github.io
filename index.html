@@ -1241,7 +1241,12 @@
     }
     .gsm-star.on { color: #f59e0b; }
     .gsm-body:not(.readonly) .gsm-star:hover { color: #f59e0b; }
-    .gsm-body.readonly .gsm-star { cursor: default !important; pointer-events: none; }
+    /* 未ログイン時：色を固定・操作不可・フォーカス無効 */
+    .gsm-body.readonly .gsm-star {
+      cursor: default !important; pointer-events: none;
+      color: #d1d5db !important; outline: none;
+    }
+    .gsm-body.readonly .gsm-star.on { color: #f59e0b !important; }
     .gsm-footer {
       padding: 1rem 1.5rem; border-top: 1px solid var(--border);
       display: flex; gap: 0.75rem; align-items: center;
@@ -1528,12 +1533,12 @@
           <div class="p-skill-track"><div class="p-skill-fill" data-pct="88"></div></div>
         </div>
         <div>
-          <div class="p-skill-header"><span>Java / Spring MVC</span><span class="p-skill-pct">82%</span></div>
-          <div class="p-skill-track"><div class="p-skill-fill" data-pct="82"></div></div>
-        </div>
-        <div>
           <div class="p-skill-header"><span>HTML / CSS / JavaScript</span><span class="p-skill-pct">78%</span></div>
           <div class="p-skill-track"><div class="p-skill-fill" data-pct="78"></div></div>
+        </div>
+        <div>
+          <div class="p-skill-header"><span>Java / Spring MVC</span><span class="p-skill-pct">82%</span></div>
+          <div class="p-skill-track"><div class="p-skill-fill" data-pct="82"></div></div>
         </div>
         <div>
           <div class="p-skill-header"><span>Python</span><span class="p-skill-pct">65%</span></div>
@@ -1714,17 +1719,17 @@
         </div>
         <div class="skill-item">
           <div class="skill-header">
-            <span class="skill-name">Java / Spring MVC</span>
-            <span class="skill-pct">82%</span>
-          </div>
-          <div class="skill-track"><div class="skill-fill" data-pct="82"></div></div>
-        </div>
-        <div class="skill-item">
-          <div class="skill-header">
             <span class="skill-name">HTML / CSS / JavaScript</span>
             <span class="skill-pct">78%</span>
           </div>
           <div class="skill-track"><div class="skill-fill" data-pct="78"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">Java / Spring MVC</span>
+            <span class="skill-pct">82%</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-pct="82"></div></div>
         </div>
         <div class="skill-item">
           <div class="skill-header">
@@ -2633,7 +2638,7 @@
       const played = rec ? rec.played : t.dp;
       const stars  = rec ? rec.stars  : t.ds;
       const starsHtml = [1,2,3,4,5].map(n =>
-        `<button class="gsm-star ${stars >= n ? 'on' : ''}" data-val="${n}" aria-label="${n}星" ${readonly ? 'disabled' : ''}>★</button>`
+        `<button class="gsm-star ${stars >= n ? 'on' : ''}" data-val="${n}" aria-label="${n}星" tabindex="${readonly ? '-1' : '0'}">★</button>`
       ).join('');
       return `
         <div class="gsm-row" data-id="${t.id}">
@@ -2819,9 +2824,9 @@
     new Chart(doughnutCtx, {
       type: 'doughnut',
       data: {
-        labels: ['VBA / Power Automate', 'Java / Spring MVC', 'Web Frontend', 'Python', 'AWS / Cloud'],
+        labels: ['VBA / Power Automate', 'Web Frontend', 'Java / Spring MVC', 'Python', 'AWS / Cloud'],
         datasets: [{
-          data: [88, 82, 78, 65, 60],
+          data: [88, 78, 82, 65, 60],
           backgroundColor: [
             'rgba(26,86,219,0.85)',
             'rgba(59,130,246,0.75)',
@@ -2862,10 +2867,10 @@
     new Chart(radarCtx, {
       type: 'radar',
       data: {
-        labels: ['VBA / Power Automate', 'Java / Spring', 'Web Frontend', 'Python', 'AWS / Cloud', 'COBOL'],
+        labels: ['VBA / Power Automate', 'Web Frontend', 'Java / Spring', 'Python', 'AWS / Cloud', 'COBOL'],
         datasets: [{
           label: '山中康寛',
-          data: [88, 82, 78, 65, 60, 52],
+          data: [88, 78, 82, 65, 60, 52],
           backgroundColor: 'rgba(26,86,219,0.12)',
           borderColor: 'rgba(26,86,219,0.8)',
           borderWidth: 2,
