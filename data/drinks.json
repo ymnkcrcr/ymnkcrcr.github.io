@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "title": "🍺 今までに飲んだお酒の実績",
+    "description": "量より質派。好みのジャンルを開拓し続けています。"
+  },
+  "items": [
+    { "id": "craft-beer",       "emoji": "🍺", "name": "クラフトビール",   "desc": "IPA / スタウト / ヘイジーが特に好き。醸造所めぐりが趣味。", "rating": 5 },
+    { "id": "whisky",           "emoji": "🥃", "name": "ウイスキー",       "desc": "ハイボールで気軽に。山崎・白州・響が三大好き銘柄。",       "rating": 4 },
+    { "id": "sake",             "emoji": "🍶", "name": "日本酒",           "desc": "辛口中心。大吟醸の香りに目覚めてしまい、出費が増えた。",   "rating": 4 },
+    { "id": "lemon-sour",       "emoji": "🍋", "name": "レモンサワー",     "desc": "定番中の定番。ギンギンに冷えた一杯で全てが解決する。",     "rating": 4 },
+    { "id": "red-wine",         "emoji": "🍷", "name": "赤ワイン",         "desc": "肉料理のお供に。タンニン強めのフルボディが好み。",         "rating": 3 },
+    { "id": "cocktail",         "emoji": "🍸", "name": "カクテル",         "desc": "モヒート・カシスオレンジ・ジントニックが御三家。",         "rating": 3 },
+    { "id": "tea-nonalcoholic", "emoji": "🍵", "name": "日本茶 / ノンアル", "desc": "深蒸し茶が好き。仕事中は緑茶一択。飲み会翌日は麦茶。",     "rating": 5 },
+    { "id": "awamori-shochu",   "emoji": "🫗", "name": "泡盛 / 焼酎",      "desc": "旅先で飲む地酒が一番美味しい。沖縄の泡盛はまた別格。",     "rating": 3 }
+  ]
+}
