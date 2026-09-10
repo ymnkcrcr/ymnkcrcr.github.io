@@ -1,0 +1,192 @@
+{
+  "meta": {
+    "title": "🎮 歴代プレイゲーム実績",
+    "description": "小学生から続くゲーム歴。RPG・アクション・対戦ゲーム問わず何でもやります。",
+    "hint": "💡 カードをクリックするとシリーズ一覧・プレイ記録の編集ができます"
+  },
+  "platforms": [
+    { "id": "nintendo",    "label": "Nintendo",    "icon": "🔴" },
+    { "id": "playstation", "label": "PlayStation", "icon": "🎮" },
+    { "id": "pc",          "label": "PC",          "icon": "🖥️" }
+  ],
+  "series": [
+    {
+      "id": "pokemon",
+      "platform": "nintendo",
+      "emoji": "🔴",
+      "name": "ポケットモンスター シリーズ",
+      "genre": "RPG",
+      "stars": 5,
+      "badge": { "type": "loved", "label": "永遠の相棒" },
+      "note": "初代〜最新作まで全作プレイ。幼少期から現在まで続く原点。",
+      "deco": ["🔴", "⚡", "🌊", "🔥", "🌿", "💎", "🌙", "❄️"],
+      "titles": [
+        { "id": "pk_rg",      "title": "赤・緑",                                  "year": "1996", "played": true,  "stars": 5 },
+        { "id": "pk_pikachu", "title": "ピカチュウ版",                            "year": "1998", "played": true,  "stars": 4 },
+        { "id": "pk_gs",      "title": "金・銀",                                  "year": "1999", "played": true,  "stars": 5 },
+        { "id": "pk_crystal", "title": "クリスタル",                              "year": "2000", "played": true,  "stars": 4 },
+        { "id": "pk_rs",      "title": "ルビー・サファイア",                      "year": "2002", "played": true,  "stars": 4 },
+        { "id": "pk_frlg",    "title": "ファイアレッド・リーフグリーン",          "year": "2004", "played": true,  "stars": 4 },
+        { "id": "pk_emerald", "title": "エメラルド",                              "year": "2005", "played": true,  "stars": 5 },
+        { "id": "pk_dp",      "title": "ダイヤモンド・パール",                    "year": "2006", "played": true,  "stars": 4 },
+        { "id": "pk_plat",    "title": "プラチナ",                                "year": "2008", "played": true,  "stars": 4 },
+        { "id": "pk_hgss",    "title": "ハートゴールド・ソウルシルバー",          "year": "2009", "played": true,  "stars": 5 },
+        { "id": "pk_bw",      "title": "ブラック・ホワイト",                      "year": "2010", "played": true,  "stars": 4 },
+        { "id": "pk_bw2",     "title": "ブラック2・ホワイト2",                    "year": "2012", "played": true,  "stars": 4 },
+        { "id": "pk_xy",      "title": "X・Y",                                    "year": "2013", "played": true,  "stars": 3 },
+        { "id": "pk_oras",    "title": "オメガルビー・アルファサファイア",        "year": "2014", "played": true,  "stars": 4 },
+        { "id": "pk_sm",      "title": "サン・ムーン",                            "year": "2016", "played": true,  "stars": 4 },
+        { "id": "pk_usum",    "title": "ウルトラサン・ウルトラムーン",            "year": "2017", "played": true,  "stars": 3 },
+        { "id": "pk_lgpe",    "title": "Let's Go! ピカチュウ・イーブイ",          "year": "2018", "played": false, "stars": 0 },
+        { "id": "pk_swsh",    "title": "ソード・シールド",                        "year": "2019", "played": true,  "stars": 3 },
+        { "id": "pk_bdsp",    "title": "ブリリアントダイヤモンド・シャイニングパール", "year": "2021", "played": true, "stars": 3 },
+        { "id": "pk_la",      "title": "レジェンズ アルセウス",                   "year": "2022", "played": true,  "stars": 4 },
+        { "id": "pk_sv",      "title": "スカーレット・バイオレット",              "year": "2022", "played": true,  "stars": 4 }
+      ]
+    },
+    {
+      "id": "mhunter",
+      "platform": "nintendo",
+      "emoji": "🐉",
+      "name": "モンスターハンター シリーズ",
+      "genre": "アクション・ハンティング",
+      "stars": 5,
+      "badge": { "type": "clear", "label": "HR999 到達" },
+      "note": "睡眠時間を削った伝説の一本。ほぼすべての装備を作成。",
+      "deco": ["🐉", "⚔️", "🛡️", "🔥", "💎", "🦴", "🌋", "🗡️"],
+      "titles": [
+        { "id": "mh_1",     "title": "モンスターハンター",           "year": "2004", "played": false, "stars": 0 },
+        { "id": "mh_g",     "title": "モンスターハンター G",         "year": "2005", "played": false, "stars": 0 },
+        { "id": "mh_dos",   "title": "モンスターハンター ドス",      "year": "2006", "played": true,  "stars": 4 },
+        { "id": "mh_tri",   "title": "モンスターハンタートライ",     "year": "2009", "played": true,  "stars": 4 },
+        { "id": "mh_3g",    "title": "モンスターハンター3G",         "year": "2011", "played": true,  "stars": 5 },
+        { "id": "mh_4",     "title": "モンスターハンター4",          "year": "2013", "played": true,  "stars": 5 },
+        { "id": "mh_4g",    "title": "モンスターハンター4G",         "year": "2014", "played": true,  "stars": 5 },
+        { "id": "mh_x",     "title": "モンスターハンタークロス",     "year": "2015", "played": true,  "stars": 4 },
+        { "id": "mh_xx",    "title": "モンスターハンターダブルクロス", "year": "2017", "played": true, "stars": 4 },
+        { "id": "mh_world", "title": "モンスターハンター：ワールド", "year": "2018", "played": true,  "stars": 5 },
+        { "id": "mh_ice",   "title": "アイスボーン（拡張）",         "year": "2019", "played": true,  "stars": 5 },
+        { "id": "mh_rise",  "title": "モンスターハンターライズ",     "year": "2021", "played": true,  "stars": 4 },
+        { "id": "mh_sun",   "title": "サンブレイク（拡張）",         "year": "2022", "played": true,  "stars": 4 },
+        { "id": "mh_wilds", "title": "モンスターハンターワイルズ",   "year": "2025", "played": false, "stars": 0 }
+      ]
+    },
+    {
+      "id": "zelda",
+      "platform": "nintendo",
+      "emoji": "🌿",
+      "name": "ゼルダの伝説 シリーズ",
+      "genre": "アドベンチャー",
+      "stars": 5,
+      "badge": { "type": "clear", "label": "全祠クリア" },
+      "note": "オープンワールドの革命。毎日ちょっとずつ遊ぶのが至福。",
+      "deco": ["🌿", "⚔️", "🔮", "🏹", "✨", "🗝️", "🌙", "🛡️"],
+      "titles": [
+        { "id": "z_alttp", "title": "神々のトライフォース",         "year": "1991", "played": true, "stars": 5 },
+        { "id": "z_la",    "title": "夢をみる島",                   "year": "1993", "played": true, "stars": 4 },
+        { "id": "z_oot",   "title": "時のオカリナ",                 "year": "1998", "played": true, "stars": 5 },
+        { "id": "z_mm",    "title": "ムジュラの仮面",               "year": "2000", "played": true, "stars": 5 },
+        { "id": "z_ww",    "title": "風のタクト",                   "year": "2002", "played": true, "stars": 4 },
+        { "id": "z_tp",    "title": "トワイライトプリンセス",       "year": "2006", "played": true, "stars": 4 },
+        { "id": "z_oot3d", "title": "時のオカリナ 3D",              "year": "2011", "played": true, "stars": 5 },
+        { "id": "z_ss",    "title": "スカイウォードソード",         "year": "2011", "played": true, "stars": 3 },
+        { "id": "z_botw",  "title": "ブレス オブ ザ ワイルド",      "year": "2017", "played": true, "stars": 5 },
+        { "id": "z_totk",  "title": "ティアーズ オブ ザ キングダム", "year": "2023", "played": true, "stars": 5 }
+      ]
+    },
+    {
+      "id": "doubutsu",
+      "platform": "nintendo",
+      "emoji": "🏝️",
+      "name": "どうぶつの森 シリーズ",
+      "genre": "シミュレーション",
+      "stars": 4,
+      "badge": { "type": "clear", "label": "島★5 達成" },
+      "note": "コロナ禍の精神的支柱。島がなければ乗り越えられなかった。",
+      "deco": ["🏝️", "🌸", "🍎", "🦋", "🌿", "🐟", "⭐", "🍄"],
+      "titles": [
+        { "id": "anm_wild", "title": "おいでよ どうぶつの森",         "year": "2005", "played": true, "stars": 4 },
+        { "id": "anm_new",  "title": "とびだせ どうぶつの森",         "year": "2012", "played": true, "stars": 5 },
+        { "id": "anm_nl",   "title": "とびだせ どうぶつの森 amiibo+", "year": "2016", "played": true, "stars": 4 },
+        { "id": "anm_nh",   "title": "あつまれ どうぶつの森",         "year": "2020", "played": true, "stars": 5 }
+      ]
+    },
+    {
+      "id": "splatoon",
+      "platform": "nintendo",
+      "emoji": "🎯",
+      "name": "スプラトゥーン シリーズ",
+      "genre": "TPS・シューター",
+      "stars": 4,
+      "badge": { "type": "playing", "label": "ウデマエ X" },
+      "note": "任天堂の天才。こんなに楽しい対戦ゲームはない。",
+      "deco": ["🎯", "🦑", "🖌️", "💦", "🌊", "🎨", "⭐", "💥"],
+      "titles": [
+        { "id": "sp_1",    "title": "スプラトゥーン",                       "year": "2015", "played": true,  "stars": 4 },
+        { "id": "sp_2",    "title": "スプラトゥーン2",                      "year": "2017", "played": true,  "stars": 5 },
+        { "id": "sp_2_oc", "title": "スプラトゥーン2 オクト・エキスパンション", "year": "2018", "played": true, "stars": 5 },
+        { "id": "sp_3",    "title": "スプラトゥーン3",                      "year": "2022", "played": true,  "stars": 4 },
+        { "id": "sp_3_se", "title": "スプラトゥーン3 サイド・オーダー",     "year": "2024", "played": false, "stars": 0 }
+      ]
+    },
+    {
+      "id": "soulsborne",
+      "platform": "playstation",
+      "emoji": "⚔️",
+      "name": "ELDEN RING / ソウルシリーズ",
+      "genre": "アクション RPG",
+      "stars": 5,
+      "badge": { "type": "clear", "label": "全ボス撃破" },
+      "note": "死にゲーの最高傑作。折れない心を鍛えられた。",
+      "deco": ["⚔️", "💀", "🔥", "🌑", "👁️", "🕯️", "🏰", "☠️"],
+      "titles": [
+        { "id": "sl_demon",  "title": "デモンズソウル",              "year": "2009", "played": false, "stars": 0 },
+        { "id": "sl_ds1",    "title": "ダークソウル",                "year": "2011", "played": true,  "stars": 5 },
+        { "id": "sl_ds2",    "title": "ダークソウル2",               "year": "2014", "played": true,  "stars": 4 },
+        { "id": "sl_bb",     "title": "ブラッドボーン",              "year": "2015", "played": true,  "stars": 5 },
+        { "id": "sl_ds3",    "title": "ダークソウル3",               "year": "2016", "played": true,  "stars": 5 },
+        { "id": "sl_sekiro", "title": "隻狼 SEKIRO",                 "year": "2019", "played": true,  "stars": 5 },
+        { "id": "sl_er",     "title": "ELDEN RING",                  "year": "2022", "played": true,  "stars": 5 },
+        { "id": "sl_er_dlc", "title": "ELDEN RING 影の地（DLC）",    "year": "2024", "played": true,  "stars": 5 }
+      ]
+    },
+    {
+      "id": "fifa",
+      "platform": "playstation",
+      "emoji": "⚽",
+      "name": "FIFA / EA Sports FC シリーズ",
+      "genre": "スポーツ",
+      "stars": 4,
+      "badge": { "type": "playing", "label": "毎年更新中" },
+      "note": "Ultimate Team に課金を続けて数年。いつ抜け出せるのか。",
+      "deco": ["⚽", "🏟️", "🥅", "🏆", "👟", "🎽", "🥇", "🎯"],
+      "titles": [
+        { "id": "fifa_19", "title": "FIFA 19",           "year": "2018", "played": true,  "stars": 3 },
+        { "id": "fifa_20", "title": "FIFA 20",           "year": "2019", "played": true,  "stars": 3 },
+        { "id": "fifa_21", "title": "FIFA 21",           "year": "2020", "played": true,  "stars": 4 },
+        { "id": "fifa_22", "title": "FIFA 22",           "year": "2021", "played": true,  "stars": 4 },
+        { "id": "fifa_23", "title": "FIFA 23",           "year": "2022", "played": true,  "stars": 4 },
+        { "id": "eafc_24", "title": "EA SPORTS FC 24",   "year": "2023", "played": true,  "stars": 3 },
+        { "id": "eafc_25", "title": "EA SPORTS FC 25",   "year": "2024", "played": false, "stars": 0 }
+      ]
+    },
+    {
+      "id": "apex",
+      "platform": "pc",
+      "emoji": "🔥",
+      "name": "Apex Legends",
+      "genre": "FPS · Battle Royale",
+      "stars": 4,
+      "badge": { "type": "clear", "label": "ダイヤ到達" },
+      "note": "仲間と深夜に叫びながらやるのが一番楽しい。",
+      "deco": ["🔥", "💥", "🎯", "⚡", "🏆", "🔫", "🛸", "💠"],
+      "titles": [
+        { "id": "apex_s1",  "title": "シーズン1〜5（黎明期）", "year": "2019-20", "played": true,  "stars": 4 },
+        { "id": "apex_s6",  "title": "シーズン6〜10",          "year": "2020-21", "played": true,  "stars": 4 },
+        { "id": "apex_s11", "title": "シーズン11〜15",         "year": "2021-23", "played": true,  "stars": 5 },
+        { "id": "apex_s16", "title": "シーズン16〜20",         "year": "2023-24", "played": true,  "stars": 4 },
+        { "id": "apex_s21", "title": "シーズン21〜現在",       "year": "2024-",   "played": false, "stars": 0 }
+      ]
+    }
+  ]
+}
