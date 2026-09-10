@@ -187,6 +187,194 @@
         { "id": "apex_s16", "title": "シーズン16〜20",         "year": "2023-24", "played": true,  "stars": 4 },
         { "id": "apex_s21", "title": "シーズン21〜現在",       "year": "2024-",   "played": false, "stars": 0 }
       ]
+    },
+    {
+      "id": "mario",
+      "platform": "nintendo",
+      "emoji": "🍄",
+      "name": "スーパーマリオ シリーズ",
+      "genre": "アクション・プラットフォーマー",
+      "stars": 5,
+      "badge": { "type": "clear", "label": "全ステージ制覇" },
+      "note": "ゲーム体験の原点。何度遊んでも操作していて気持ちいい。",
+      "deco": ["🍄", "⭐", "🪙", "🌼", "🐢", "🏰", "🎩", "💫"],
+      "titles": [
+        { "id": "mr_smb",      "title": "スーパーマリオブラザーズ",         "year": "1985", "played": true,  "stars": 4 },
+        { "id": "mr_smb3",     "title": "スーパーマリオブラザーズ3",        "year": "1988", "played": true,  "stars": 5 },
+        { "id": "mr_world",    "title": "スーパーマリオワールド",           "year": "1990", "played": true,  "stars": 5 },
+        { "id": "mr_64",       "title": "スーパーマリオ64",                 "year": "1996", "played": true,  "stars": 5 },
+        { "id": "mr_sunshine", "title": "スーパーマリオサンシャイン",       "year": "2002", "played": true,  "stars": 4 },
+        { "id": "mr_nsmb",     "title": "New スーパーマリオブラザーズ",     "year": "2006", "played": true,  "stars": 4 },
+        { "id": "mr_galaxy",   "title": "スーパーマリオギャラクシー",       "year": "2007", "played": true,  "stars": 5 },
+        { "id": "mr_galaxy2",  "title": "スーパーマリオギャラクシー2",      "year": "2010", "played": true,  "stars": 5 },
+        { "id": "mr_3dland",   "title": "スーパーマリオ 3Dランド",          "year": "2011", "played": true,  "stars": 4 },
+        { "id": "mr_3dworld",  "title": "スーパーマリオ 3Dワールド",        "year": "2013", "played": true,  "stars": 4 },
+        { "id": "mr_odyssey",  "title": "スーパーマリオ オデッセイ",        "year": "2017", "played": true,  "stars": 5 },
+        { "id": "mr_wonder",   "title": "スーパーマリオブラザーズ ワンダー", "year": "2023", "played": true,  "stars": 4 }
+      ]
+    },
+    {
+      "id": "smash",
+      "platform": "nintendo",
+      "emoji": "💥",
+      "name": "大乱闘スマッシュブラザーズ シリーズ",
+      "genre": "対戦アクション",
+      "stars": 5,
+      "badge": { "type": "playing", "label": "VIP部屋常連" },
+      "note": "友人と集まれば必ず起動する。20年以上遊び続けている対戦の定番。",
+      "deco": ["💥", "👊", "⚡", "🌟", "🔥", "🎮", "🏆", "✨"],
+      "titles": [
+        { "id": "sm_64",  "title": "ニンテンドウオールスター! 大乱闘スマッシュブラザーズ", "year": "1999", "played": true, "stars": 4 },
+        { "id": "sm_dx",  "title": "大乱闘スマッシュブラザーズDX",                        "year": "2001", "played": true, "stars": 5 },
+        { "id": "sm_x",   "title": "大乱闘スマッシュブラザーズX",                         "year": "2008", "played": true, "stars": 4 },
+        { "id": "sm_for", "title": "大乱闘スマッシュブラザーズ for 3DS / Wii U",          "year": "2014", "played": true, "stars": 4 },
+        { "id": "sm_sp",  "title": "大乱闘スマッシュブラザーズ SPECIAL",                  "year": "2018", "played": true, "stars": 5 }
+      ]
+    },
+    {
+      "id": "mariokart",
+      "platform": "nintendo",
+      "emoji": "🏎️",
+      "name": "マリオカート シリーズ",
+      "genre": "レース",
+      "stars": 4,
+      "badge": { "type": "playing", "label": "150cc フルコンプ" },
+      "note": "誰とやっても盛り上がる魔法のゲーム。青甲羅だけは許していない。",
+      "deco": ["🏎️", "🍌", "🐢", "🏁", "⭐", "🪙", "💨", "🏆"],
+      "titles": [
+        { "id": "mk_super",  "title": "スーパーマリオカート",          "year": "1992", "played": true,  "stars": 4 },
+        { "id": "mk_64",     "title": "マリオカート64",                "year": "1996", "played": true,  "stars": 5 },
+        { "id": "mk_advance","title": "マリオカート アドバンス",       "year": "2001", "played": true,  "stars": 3 },
+        { "id": "mk_dd",     "title": "マリオカート ダブルダッシュ!!", "year": "2003", "played": true,  "stars": 4 },
+        { "id": "mk_ds",     "title": "マリオカートDS",                "year": "2005", "played": true,  "stars": 5 },
+        { "id": "mk_wii",    "title": "マリオカートWii",               "year": "2008", "played": true,  "stars": 4 },
+        { "id": "mk_7",      "title": "マリオカート7",                 "year": "2011", "played": true,  "stars": 4 },
+        { "id": "mk_8",      "title": "マリオカート8",                 "year": "2014", "played": true,  "stars": 4 },
+        { "id": "mk_8dx",    "title": "マリオカート8 デラックス",      "year": "2017", "played": true,  "stars": 5 },
+        { "id": "mk_world",  "title": "マリオカート ワールド",         "year": "2025", "played": false, "stars": 0 }
+      ]
+    },
+    {
+      "id": "fireemblem",
+      "platform": "nintendo",
+      "emoji": "🛡️",
+      "name": "ファイアーエムブレム シリーズ",
+      "genre": "シミュレーションRPG",
+      "stars": 4,
+      "badge": { "type": "clear", "label": "ハード・クラシック制覇" },
+      "note": "ロストありで進めるのが流儀。1マスの判断に何十分も悩むのが楽しい。",
+      "deco": ["🛡️", "⚔️", "🐎", "👑", "🔥", "🏰", "📜", "✨"],
+      "titles": [
+        { "id": "fe_rekka",   "title": "ファイアーエムブレム 烈火の剣",                 "year": "2003", "played": true,  "stars": 5 },
+        { "id": "fe_seima",   "title": "ファイアーエムブレム 聖魔の光石",               "year": "2004", "played": true,  "stars": 4 },
+        { "id": "fe_souen",   "title": "ファイアーエムブレム 蒼炎の軌跡",               "year": "2005", "played": true,  "stars": 4 },
+        { "id": "fe_akatsuki","title": "ファイアーエムブレム 暁の女神",                 "year": "2007", "played": true,  "stars": 4 },
+        { "id": "fe_kakusei", "title": "ファイアーエムブレム 覚醒",                     "year": "2012", "played": true,  "stars": 5 },
+        { "id": "fe_if",      "title": "ファイアーエムブレム if",                       "year": "2015", "played": true,  "stars": 4 },
+        { "id": "fe_echoes",  "title": "ファイアーエムブレム エコーズ もうひとりの英雄王", "year": "2017", "played": true, "stars": 3 },
+        { "id": "fe_fuka",    "title": "ファイアーエムブレム 風花雪月",                 "year": "2019", "played": true,  "stars": 5 },
+        { "id": "fe_engage",  "title": "ファイアーエムブレム エンゲージ",               "year": "2023", "played": true,  "stars": 4 }
+      ]
+    },
+    {
+      "id": "finalfantasy",
+      "platform": "playstation",
+      "emoji": "💎",
+      "name": "ファイナルファンタジー シリーズ",
+      "genre": "RPG",
+      "stars": 5,
+      "badge": { "type": "loved", "label": "青春そのもの" },
+      "note": "音楽だけで当時の記憶が全部戻ってくる。ナンバリングは追い続けている。",
+      "deco": ["💎", "🗡️", "🔮", "🌟", "🐤", "⚡", "🕊️", "❄️"],
+      "titles": [
+        { "id": "ff_6",       "title": "ファイナルファンタジーVI",          "year": "1994", "played": true,  "stars": 5 },
+        { "id": "ff_7",       "title": "ファイナルファンタジーVII",         "year": "1997", "played": true,  "stars": 5 },
+        { "id": "ff_8",       "title": "ファイナルファンタジーVIII",        "year": "1999", "played": true,  "stars": 4 },
+        { "id": "ff_9",       "title": "ファイナルファンタジーIX",          "year": "2000", "played": true,  "stars": 5 },
+        { "id": "ff_10",      "title": "ファイナルファンタジーX",           "year": "2001", "played": true,  "stars": 5 },
+        { "id": "ff_12",      "title": "ファイナルファンタジーXII",         "year": "2006", "played": true,  "stars": 4 },
+        { "id": "ff_13",      "title": "ファイナルファンタジーXIII",        "year": "2009", "played": true,  "stars": 3 },
+        { "id": "ff_15",      "title": "ファイナルファンタジーXV",          "year": "2016", "played": true,  "stars": 3 },
+        { "id": "ff_7r",      "title": "ファイナルファンタジーVII リメイク", "year": "2020", "played": true,  "stars": 5 },
+        { "id": "ff_16",      "title": "ファイナルファンタジーXVI",         "year": "2023", "played": true,  "stars": 4 },
+        { "id": "ff_7rebirth","title": "ファイナルファンタジーVII リバース", "year": "2024", "played": false, "stars": 0 }
+      ]
+    },
+    {
+      "id": "kingdomhearts",
+      "platform": "playstation",
+      "emoji": "🔑",
+      "name": "キングダム ハーツ シリーズ",
+      "genre": "アクションRPG",
+      "stars": 4,
+      "badge": { "type": "clear", "label": "隠しボス撃破" },
+      "note": "ディズニーとFFが同居する奇跡。ストーリーは何周しても理解しきれない。",
+      "deco": ["🔑", "💫", "🌟", "❤️", "🌙", "🗝️", "✨", "🏰"],
+      "titles": [
+        { "id": "kh_1",   "title": "キングダム ハーツ",                              "year": "2002", "played": true,  "stars": 5 },
+        { "id": "kh_com", "title": "キングダム ハーツ チェイン オブ メモリーズ",     "year": "2004", "played": true,  "stars": 3 },
+        { "id": "kh_2",   "title": "キングダム ハーツII",                            "year": "2005", "played": true,  "stars": 5 },
+        { "id": "kh_bbs", "title": "キングダム ハーツ バース バイ スリープ",         "year": "2010", "played": true,  "stars": 4 },
+        { "id": "kh_ddd", "title": "キングダム ハーツ 3D ドリーム ドロップ ディスタンス", "year": "2012", "played": true, "stars": 3 },
+        { "id": "kh_3",   "title": "キングダム ハーツIII",                           "year": "2019", "played": true,  "stars": 4 }
+      ]
+    },
+    {
+      "id": "biohazard",
+      "platform": "playstation",
+      "emoji": "🧟",
+      "name": "バイオハザード シリーズ",
+      "genre": "サバイバルホラー",
+      "stars": 4,
+      "badge": { "type": "clear", "label": "ナイフ縛りクリア" },
+      "note": "怖いのは苦手なのに毎回買ってしまう。RE:2 の完成度が別格。",
+      "deco": ["🧟", "🩸", "🔫", "🏚️", "💊", "🗝️", "🕯️", "☣️"],
+      "titles": [
+        { "id": "bh_1",       "title": "バイオハザード",                      "year": "1996", "played": true,  "stars": 4 },
+        { "id": "bh_2",       "title": "バイオハザード2",                     "year": "1998", "played": true,  "stars": 5 },
+        { "id": "bh_4",       "title": "バイオハザード4",                     "year": "2005", "played": true,  "stars": 5 },
+        { "id": "bh_5",       "title": "バイオハザード5",                     "year": "2009", "played": true,  "stars": 4 },
+        { "id": "bh_6",       "title": "バイオハザード6",                     "year": "2012", "played": true,  "stars": 3 },
+        { "id": "bh_7",       "title": "バイオハザード7 レジデント イービル", "year": "2017", "played": true,  "stars": 4 },
+        { "id": "bh_re2",     "title": "バイオハザード RE:2",                 "year": "2019", "played": true,  "stars": 5 },
+        { "id": "bh_re3",     "title": "バイオハザード RE:3",                 "year": "2020", "played": true,  "stars": 3 },
+        { "id": "bh_village", "title": "バイオハザード ヴィレッジ",           "year": "2021", "played": true,  "stars": 4 },
+        { "id": "bh_re4",     "title": "バイオハザード RE:4",                 "year": "2023", "played": true,  "stars": 5 }
+      ]
+    },
+    {
+      "id": "valorant",
+      "platform": "pc",
+      "emoji": "🔫",
+      "name": "VALORANT",
+      "genre": "FPS · タクティカルシューター",
+      "stars": 4,
+      "badge": { "type": "playing", "label": "現役プレイ中" },
+      "note": "エイムよりも立ち回りで勝てるのが楽しい。Apexとは別の脳を使う。",
+      "deco": ["🔫", "💠", "🎯", "💥", "⚡", "🛡️", "🏆", "🔻"],
+      "titles": [
+        { "id": "val_ep1", "title": "エピソード1〜3（リリース初期）", "year": "2020-21", "played": true,  "stars": 4 },
+        { "id": "val_ep4", "title": "エピソード4〜6",                 "year": "2022-23", "played": true,  "stars": 4 },
+        { "id": "val_ep7", "title": "エピソード7〜9",                 "year": "2023-24", "played": true,  "stars": 5 },
+        { "id": "val_s25", "title": "2025シーズン〜現在",             "year": "2025-",   "played": false, "stars": 0 }
+      ]
+    },
+    {
+      "id": "minecraft",
+      "platform": "pc",
+      "emoji": "⛏️",
+      "name": "Minecraft",
+      "genre": "サンドボックス",
+      "stars": 4,
+      "badge": { "type": "playing", "label": "レッドストーン沼" },
+      "note": "気づくと朝になっている。回路を組み始めるとエンジニアの血が騒ぐ。",
+      "deco": ["⛏️", "🟩", "🧱", "💎", "🐷", "🌳", "🔥", "🗺️"],
+      "titles": [
+        { "id": "mc_java",     "title": "Minecraft Java Edition",     "year": "2011", "played": true,  "stars": 5 },
+        { "id": "mc_bedrock",  "title": "統合版（Bedrock Edition）",  "year": "2017", "played": true,  "stars": 4 },
+        { "id": "mc_dungeons", "title": "Minecraft Dungeons",         "year": "2020", "played": true,  "stars": 3 },
+        { "id": "mc_legends",  "title": "Minecraft Legends",          "year": "2023", "played": false, "stars": 0 }
+      ]
     }
   ]
 }
