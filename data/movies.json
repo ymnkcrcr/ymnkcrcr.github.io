@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "title": "🎬 映画・アニメ",
+    "description": "SF・サスペンス・バトルものが特に好き。週末に1〜2本は観ます。"
+  },
+  "items": [
+    { "id": "interstellar",    "emoji": "🤖", "title": "インターステラー", "category": "SF映画",        "release": "2014",   "stars": 5, "note": "宇宙と時間と愛。観るたびに解釈が変わる名作。" },
+    { "id": "matrix",          "emoji": "🧱", "title": "マトリックス",     "category": "SF・アクション", "release": "1999",   "stars": 5, "note": "すべての映像作品の前後に「マトリックス以前・以後」がある。" },
+    { "id": "attack-on-titan", "emoji": "⚔️", "title": "進撃の巨人",       "category": "アニメ",        "release": "完結済", "stars": 5, "note": "伏線と世界観の密度が異次元。最終回まで目が離せない。" },
+    { "id": "jujutsu-kaisen",  "emoji": "🔮", "title": "呪術廻戦",         "category": "アニメ",        "release": "連載中", "stars": 4, "note": "バトルの演出が圧倒的。毎クール楽しみにしている。" },
+    { "id": "one-punch-man",   "emoji": "🦸", "title": "ワンパンマン",     "category": "アニメ",        "release": "連載中", "stars": 5, "note": "最強すぎて逆に悩むサイタマに共感しかない。" },
+    { "id": "joker",           "emoji": "🎭", "title": "ジョーカー",       "category": "映画",          "release": "2019",   "stars": 5, "note": "ホアキン・フェニックスの演技が全てを語る。ずっしり重い傑作。" }
+  ]
+}
