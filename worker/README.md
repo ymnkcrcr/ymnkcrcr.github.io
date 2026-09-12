@@ -79,6 +79,26 @@ npx wrangler d1 execute portfolio-db --remote --file=seed.sql
 npx wrangler deploy
 ```
 
+### 6. フロントを API に接続する
+
+`index.html` の `API_BASE_DEFAULT` にデプロイ先の URL を設定する。
+
+```js
+const API_BASE_DEFAULT = 'https://portfolio-api.xxxx.workers.dev';
+```
+
+空文字のままなら `data/*.json` を読む（デプロイ前の既定動作）。設定すると
+`games` のみ D1 から取得するようになり、**API が落ちた場合は自動的に
+`data/games.json` へフォールバック**するため、サイトが真っ白になることはない。
+
+動作確認は DevTools の Network タブで判別できる。
+
+| 取得先 | 状態 |
+|---|---|
+| `/api/games` | D1 から取得できている |
+| `data/games.json` のみ | `API_BASE_DEFAULT` が未設定 |
+| `/api/games` → `data/games.json` | API に失敗してフォールバックした（CORS 設定漏れ等を疑う） |
+
 > `schema.sql` は先頭で `DROP TABLE` するため、**本番に対して 3 を再実行すると
 > 既存データが消える**。テーブル作成済みの環境で再投入するのは避けること。
 

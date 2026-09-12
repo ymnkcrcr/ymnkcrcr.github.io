@@ -2189,14 +2189,38 @@
     });
   }
 
+  // ===== データ取得元の設定 =====
+  // Cloudflare Worker をデプロイしたら、下記に workers.dev の URL を設定する。
+  //   例: 'https://portfolio-api.xxxx.workers.dev'
+  // 空文字のままなら data/*.json をそのまま読む（デプロイ前の既定動作）。
+  // ページ側で window.PORTFOLIO_API_BASE を先に設定すれば上書きできる。
+  const API_BASE_DEFAULT = '';
+  const API_BASE = (window.PORTFOLIO_API_BASE ?? API_BASE_DEFAULT).replace(/\/+$/, '');
+
+  // API が用意されているセクションのみ記載する。未記載のものは常に JSON から読む。
+  const API_PATHS = { games: '/api/games' };
+
+  function fetchJson(url) {
+    return fetch(url).then(res => {
+      if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+      return res.json();
+    });
+  }
+
+  // API が使えるセクションは API を優先し、失敗したら JSON に退避する。
+  // API 障害時でもサイトが真っ白にならないようにするための二段構え。
+  function loadSection(name) {
+    const path = API_BASE && API_PATHS[name];
+    if (!path) return fetchJson(`data/${name}.json`);
+    return fetchJson(API_BASE + path).catch(err => {
+      console.warn(`API から ${name} を取得できませんでした。data/${name}.json を使用します:`, err);
+      return fetchJson(`data/${name}.json`);
+    });
+  }
+
   Promise.all(
     ['games', 'drinks', 'cooking', 'movies', 'travel'].map(name =>
-      fetch(`data/${name}.json`)
-        .then(res => {
-          if (!res.ok) throw new Error(`data/${name}.json: HTTP ${res.status}`);
-          return res.json();
-        })
-        .then(json => { HOBBY_DATA[name] = json; })
+      loadSection(name).then(json => { HOBBY_DATA[name] = json; })
     )
   ).then(() => {
     SERIES_BY_ID = Object.fromEntries(HOBBY_DATA.games.series.map(s => [s.id, s]));
