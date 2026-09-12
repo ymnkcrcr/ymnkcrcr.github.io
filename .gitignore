@@ -3,3 +3,7 @@ firebase-config.js
 .vercel
 .env
 .env.local
+
+# Cloudflare Workers / D1
+worker/.wrangler/
+node_modules/
