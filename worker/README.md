@@ -56,7 +56,18 @@ npx wrangler dev --local
 
 ## 本番へのデプロイ
 
-初回のみ 1〜4 を実施し、以降は 5 のみ。
+### 前提
+
+Node.js と git が必要。先に入っているか確認する。
+
+```bash
+node -v    # v18 以上であること
+git --version
+```
+
+Node.js が無ければ https://nodejs.org からLTS版を入れる。
+
+### 初回のみ 1〜4 を実施し、以降は 5 のみ
 
 ```bash
 cd worker
@@ -78,6 +89,26 @@ npx wrangler d1 execute portfolio-db --remote --file=seed.sql
 # 5. デプロイ → https://portfolio-api.<サブドメイン>.workers.dev/api/games
 npx wrangler deploy
 ```
+
+### 投入結果の確認
+
+```bash
+npx wrangler d1 execute portfolio-db --remote \
+  --command "SELECT COUNT(*) AS n FROM titles;"
+```
+
+`145` が返れば正しく入っている。`0` や「no such table」なら
+`--remote` を付け忘れてローカル DB に入った可能性が高い。
+
+### よくあるエラー
+
+| 症状 | 原因と対処 |
+|---|---|
+| `npx : ...スクリプトの実行が無効` | PowerShell の実行ポリシー。`npx.cmd wrangler ...` と `.cmd` を付けて実行するか、`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` を実行する |
+| `Couldn't find a D1 DB with the name or binding` | `wrangler.toml` の `database_id` がプレースホルダのまま |
+| `no such table: titles` | schema.sql を `--remote` なしで流した。`--remote` 付きで再実行する |
+| `curl : error code 1042` | PowerShell の `curl` は `Invoke-WebRequest` の別名。`curl.exe` を使うか、URLをブラウザで直接開く |
+| デプロイ後に画面が変わらない | `index.html` の `API_BASE_DEFAULT` が空のまま。手順6を実施する |
 
 ### 6. フロントを API に接続する
 
