@@ -555,11 +555,42 @@
     }
 
     /* ===== CONTROLLER WIDGET ===== */
+    /* 既定では非表示。右下のランチャーボタンで開閉する */
     .ctrl-wrapper {
       position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 300;
-      display: flex; align-items: flex-end; gap: 0.75rem;
+      display: none; align-items: flex-end; gap: 0.75rem;
       user-select: none;
     }
+    .ctrl-wrapper.open { display: flex; }
+
+    /* コントローラーを呼び出す小さなボタン */
+    .ctrl-launcher {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 299;
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      font-size: 1.15rem; line-height: 1; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .ctrl-launcher:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    .ctrl-launcher:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .ctrl-launcher.hidden { opacity: 0; pointer-events: none; }
+
+    /* コントローラーを閉じるボタン */
+    .ctrl-close {
+      position: absolute; top: -6px; right: -6px; z-index: 2;
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      font-size: 0.72rem; color: #374151; cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .ctrl-close:hover { background: #ef4444; color: #fff; }
+    .ctrl-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     /* スライドインメニュー（テーマ変更の影響を受けないようCSS変数不使用） */
     .ctrl-menu {
@@ -1347,6 +1378,7 @@
       .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
       .scroll-indicator { display: none; }
       .ctrl-wrapper { bottom: 0.75rem; right: 0.75rem; }
+      .ctrl-launcher { bottom: 0.75rem; right: 0.75rem; width: 40px; height: 40px; font-size: 1.05rem; }
       .ctrl-shell { padding-bottom: 42px; }
       .ctrl-body { width: 200px; height: 82px; border-radius: 41px 41px 22px 22px; }
       .ctrl-grip { width: 54px; height: 56px; }
@@ -1389,7 +1421,10 @@
 <body>
 
 <!-- ===== CONTROLLER COLOR WIDGET ===== -->
-<div class="ctrl-wrapper">
+<!-- 既定は非表示。#ctrlLauncher から開く -->
+<div class="ctrl-wrapper" id="ctrlWrapper">
+
+  <button class="ctrl-close" id="ctrlClose" title="コントローラーを隠す" aria-label="コントローラーを隠す">✕</button>
 
   <!-- メニューパネル（← で開く・→ で閉じる） -->
   <div class="ctrl-menu" id="ctrlMenu" aria-hidden="true">
@@ -1454,6 +1489,8 @@
   </div>
 
 </div>
+
+<button class="ctrl-launcher" id="ctrlLauncher" title="コントローラーを表示" aria-label="コントローラーを表示" aria-expanded="false" aria-controls="ctrlWrapper">🎮</button>
 
 <!-- ===== NAV ===== -->
 <nav id="nav">
@@ -2651,6 +2688,27 @@
   let darkOn = false, pixelOn = false, laserOn = false;
   // (gravity/konami legacy stubs kept for reset)
   let gravityCards = [];
+
+  // ---- コントローラーの表示切替（既定は非表示） ----
+  const ctrlWrapper  = document.getElementById('ctrlWrapper');
+  const ctrlLauncher = document.getElementById('ctrlLauncher');
+
+  function setControllerVisible(visible) {
+    ctrlWrapper.classList.toggle('open', visible);
+    ctrlLauncher.classList.toggle('hidden', visible);
+    ctrlLauncher.setAttribute('aria-expanded', String(visible));
+    // 閉じるときはメニューも畳んでおく
+    if (!visible) closeMenu();
+  }
+
+  ctrlLauncher.addEventListener('click', () => {
+    setControllerVisible(true);
+    document.getElementById('ctrlClose').focus();
+  });
+  document.getElementById('ctrlClose').addEventListener('click', () => {
+    setControllerVisible(false);
+    ctrlLauncher.focus();
+  });
 
   // ---- テーマ適用 ----
   function applyTheme(theme) {
