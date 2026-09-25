@@ -1,0 +1,13 @@
+name = "portfolio-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# D1 バインディング。Worker 内では env.DB でアクセスする。
+#
+# database_id は `npx wrangler d1 create portfolio-db` を実行すると発行される。
+# ローカル開発（--local）では使われないため、実 DB を作るまでは
+# 下記のプレースホルダのままで動作する。
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio-db"
+database_id = "PLACEHOLDER_RUN_WRANGLER_D1_CREATE"
